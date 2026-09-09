@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { pricing } from '@/data/content'
 import cx from '@/lib/cx'
 import Button from '@/components/ui/Button'
@@ -43,58 +44,118 @@ function FeaturedQuote() {
   )
 }
 
+/**
+ * Monthly / Yearly switch.
+ *
+ * Two toggle buttons in a labelled group rather than a custom slider: each is
+ * a real tab stop with native Enter/Space, and `aria-pressed` announces which
+ * period is showing. The moving pill is a sibling that translates, so the
+ * labels never re-flow as it slides.
+ */
+function CycleSwitch({ cycle, onChange }) {
+  return (
+    <div
+      role="group"
+      aria-label={pricing.cycleLabel}
+      className="relative mx-auto grid w-full max-w-sm grid-cols-2 rounded-full bg-surface-strong p-s1"
+    >
+      <span
+        aria-hidden="true"
+        className={cx(
+          'pointer-events-none absolute inset-y-s1 left-s1 w-[calc(50%-2px)] rounded-full bg-action-primary shadow-2',
+          'transition-transform duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]',
+          cycle === 'yearly' && 'translate-x-full',
+        )}
+      />
+
+      {pricing.cycles.map((item) => {
+        const active = item.id === cycle
+        return (
+          <button
+            key={item.id}
+            type="button"
+            aria-pressed={active}
+            onClick={() => onChange(item.id)}
+            className={cx(
+              'relative z-10 min-h-11 rounded-full px-s6 text-md font-semibold transition-colors duration-200',
+              active ? 'text-white' : 'text-text-primary hover:text-action-primary-active',
+            )}
+          >
+            {item.label}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
 function Plan({ plan }) {
-  const featured = plan.variant === 'primary'
+  const featured = plan.featured
 
   return (
     <li
       className={cx(
         'relative flex flex-col rounded-lg border bg-surface-base p-s8',
-        featured
-          ? 'border-2 border-action-primary shadow-3 lg:-mt-s6 lg:mb-[-1.5rem]'
-          : 'border-border-default shadow-1',
+        featured ? 'border-2 border-action-primary shadow-3' : 'border-border-default shadow-1',
       )}
     >
       {plan.badge && (
-        <span className="absolute -top-3 left-s8 inline-flex items-center gap-s2 rounded-full bg-action-primary px-s5 py-s1 text-xs font-semibold uppercase tracking-[0.12em] text-white shadow-2">
-          <Icon name="sparkle" size={13} />
+        <span className="absolute -top-3 right-s8 inline-flex items-center gap-s2 rounded-full bg-sun-300 px-s5 py-s1 text-xs font-bold uppercase tracking-[0.1em] text-ink-900 shadow-2">
           {plan.badge}
         </span>
       )}
 
-      <div className="flex items-center justify-between gap-s4">
-        <h3 className="text-d3 text-text-primary">{plan.name}</h3>
-        {plan.save && (
-          <span className="rounded-full bg-sun-300 px-s4 py-s1 text-xs font-bold uppercase tracking-[0.1em] text-ink-900">
-            {plan.save}
-          </span>
-        )}
+      <div className="flex flex-wrap items-center gap-s4">
+        <span className="inline-flex items-center gap-s2 rounded-full bg-badge-discount px-s4 py-s2 text-xs font-bold uppercase tracking-[0.1em] text-white">
+          <Icon name="flame" size={13} />
+          {plan.discount}
+        </span>
+        <h3 className="text-d3 text-action-primary-active">{plan.name}</h3>
       </div>
 
-      <p className="mt-s5 flex items-baseline gap-s3">
-        <span className="text-[40px] font-bold leading-none tracking-[-0.03em] text-text-primary">
-          {plan.price}
+      {plan.trial && (
+        <p className="mt-s5 text-md font-bold text-text-primary">{plan.trial}</p>
+      )}
+
+      {/* The price and its period are one unit — letting "/ month" wrap onto
+          its own line reads as a separate fact. */}
+      <p className={cx('flex flex-wrap items-baseline gap-s4', plan.trial ? 'mt-s3' : 'mt-s5')}>
+        <s className="text-lg font-medium text-text-muted">{plan.was}</s>
+        <span className="flex items-baseline gap-s3">
+          <span className="text-[40px] font-bold leading-none tracking-[-0.03em] text-text-primary">
+            {plan.price}
+          </span>
+          {plan.unit && <span className="whitespace-nowrap text-md text-text-muted">{plan.unit}</span>}
         </span>
-        <span className="text-md text-text-muted">{plan.unit}</span>
       </p>
 
-      {plan.billed && <p className="mt-s3 text-sm text-text-muted">{plan.billed}</p>}
+      {plan.then && (
+        <p className="mt-s4 text-md font-semibold italic text-text-primary">{plan.then}</p>
+      )}
 
       <p className="mt-s5 text-pretty text-md text-text-muted">{plan.summary}</p>
 
       <ul className="mt-s7 flex grow flex-col gap-s5 border-t border-border-default pt-s7">
         {plan.features.map((feature) => (
-          <li key={feature} className="flex items-start gap-s4 text-md text-text-primary">
-            <span
-              aria-hidden="true"
-              className={cx(
-                'mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full',
-                featured ? 'bg-action-primary text-white' : 'bg-surface-strong text-action-primary-active',
-              )}
-            >
-              <Icon name="check" size={14} strokeWidth={2.2} />
+          <li key={feature.strong + feature.text} className="flex items-start gap-s4 text-md">
+            {feature.pill ? (
+              <span className="mt-0.5 inline-flex shrink-0 items-center rounded-full bg-action-primary px-s4 py-s1 text-xs font-bold text-white">
+                {feature.pill}
+              </span>
+            ) : (
+              <span
+                aria-hidden="true"
+                className={cx(
+                  'mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full',
+                  featured ? 'bg-action-primary text-white' : 'bg-surface-strong text-action-primary-active',
+                )}
+              >
+                <Icon name="check" size={14} strokeWidth={2.2} />
+              </span>
+            )}
+            <span className="text-pretty text-text-primary">
+              <strong className="font-bold">{feature.strong}</strong> {feature.text}
             </span>
-            <span className="text-pretty">{feature}</span>
           </li>
         ))}
       </ul>
@@ -120,6 +181,9 @@ function Plan({ plan }) {
 }
 
 export default function Pricing() {
+  const [cycle, setCycle] = useState('monthly')
+  const plans = pricing.plans[cycle]
+
   return (
     <Section id="pricing" aria-labelledby="pricing-title" className="overflow-hidden bg-surface-raised">
       <Decor name="shapeBlobPetal" tint={false} className="right-[-3%] top-[10%] w-36 opacity-50" float />
@@ -135,16 +199,23 @@ export default function Pricing() {
           eyebrow={pricing.eyebrow}
           title={pricing.title}
           body={pricing.body}
-          className="mb-12 lg:mb-16"
+          className="mb-10"
         />
       </Reveal>
 
+      <Reveal delay={120} className="mb-12">
+        <CycleSwitch cycle={cycle} onChange={setCycle} />
+      </Reveal>
+
+      {/* Keyed on the cycle so the cards remount and re-run their reveal —
+          the swap should read as new pricing arriving, not text mutating. */}
       <Reveal
+        key={cycle}
         as="ul"
-        delay={140}
-        className="mx-auto grid max-w-3xl items-stretch gap-s7 lg:grid-cols-2 lg:gap-8"
+        delay={60}
+        className="mx-auto grid max-w-3xl items-stretch gap-s8 lg:grid-cols-2 lg:gap-8"
       >
-        {pricing.plans.map((plan) => (
+        {plans.map((plan) => (
           <Plan key={plan.id} plan={plan} />
         ))}
       </Reveal>

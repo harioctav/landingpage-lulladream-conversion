@@ -1,40 +1,10 @@
-import { hero } from '@/data/content'
+import { hero, promo } from '@/data/content'
+import AnimalPicker from '@/components/ui/AnimalPicker'
 import Button from '@/components/ui/Button'
 import Decor from '@/components/ui/Decor'
 import Icon from '@/components/ui/Icon'
 import Reveal from '@/components/ui/Reveal'
 import { Container } from '@/components/ui/Section'
-
-/**
- * Trial-status card floating over the hero photograph.
- *
- * This is the loss-aversion device: it states what is about to be taken away
- * before the page asks for anything. The meter is a real <progress> so the
- * ratio is announced rather than implied by a coloured bar.
- */
-function TrialCard() {
-  const { label, remaining, note, used, total, usedLabel } = hero.trial
-
-  return (
-    <div className="w-[min(20rem,86%)] rounded-lg border border-border-default bg-surface-base p-s7 shadow-3">
-      <p className="flex items-center gap-s3 text-xs font-semibold uppercase tracking-[0.14em] text-action-primary-active">
-        <Icon name="clock" size={15} />
-        {label}
-      </p>
-
-      <p className="mt-s4 text-d3 text-text-primary">{remaining}</p>
-
-      <progress
-        value={used}
-        max={total}
-        aria-label={usedLabel}
-        className="mt-s5 h-2 w-full appearance-none overflow-hidden rounded-full border-0 bg-surface-strong [&::-moz-progress-bar]:bg-action-primary [&::-webkit-progress-bar]:bg-surface-strong [&::-webkit-progress-value]:bg-action-primary"
-      />
-
-      <p className="mt-s4 text-sm text-text-muted">{note}</p>
-    </div>
-  )
-}
 
 export default function Hero() {
   return (
@@ -54,7 +24,7 @@ export default function Hero() {
       <Decor name="shapeSparkleAlt" tint={false} className="right-[3%] top-[8%] w-16 opacity-70" />
 
       <Container className="relative w-full">
-        <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-16">
+        <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] lg:gap-16">
           {/* Copy — revealed on load, staggered top to bottom. */}
           <div className="flex flex-col items-start gap-s7">
             <Reveal
@@ -62,7 +32,7 @@ export default function Hero() {
               as="p"
               className="inline-flex items-center gap-s3 rounded-full border border-dream-100 bg-surface-base px-s5 py-s3 text-xs font-semibold uppercase tracking-[0.14em] text-action-primary-active"
             >
-              <Icon name="clock" size={15} />
+              <Icon name="instagram" size={15} />
               {hero.eyebrow}
             </Reveal>
 
@@ -83,14 +53,30 @@ export default function Hero() {
               {hero.body}
             </Reveal>
 
+            {/* The campaign discount, stated where the eye already is. */}
+            <Reveal
+              immediate
+              delay={230}
+              as="p"
+              className="inline-flex flex-wrap items-center gap-s4 rounded-md border border-dream-100 bg-surface-base px-s5 py-s4 text-sm text-text-muted"
+            >
+              <span className="inline-flex items-center gap-s2 rounded-full bg-badge-discount px-s4 py-s1 text-xs font-bold uppercase tracking-[0.1em] text-white">
+                <Icon name="flame" size={13} />
+                {promo.badge}
+              </span>
+              <span className="text-text-primary">
+                <strong className="font-semibold">{promo.plan}</strong> — {promo.sub}
+              </span>
+            </Reveal>
+
             {/* One CTA only. A second button here splits the decision. */}
-            <Reveal immediate delay={260} className="w-full sm:w-auto">
-              <Button href={hero.cta.href} size="lg" icon="arrowRight" className="w-full sm:w-auto">
+            <Reveal immediate delay={280} className="w-full sm:w-auto">
+              <Button href={hero.cta.href} size="lg" icon="arrowRight" wrap className="w-full text-center sm:w-auto">
                 {hero.cta.label}
               </Button>
             </Reveal>
 
-            <Reveal immediate delay={330} as="p" className="text-sm text-text-muted">
+            <Reveal immediate delay={340} as="p" className="text-sm text-text-muted">
               {hero.reassurance}
             </Reveal>
 
@@ -109,13 +95,13 @@ export default function Hero() {
             </Reveal>
           </div>
 
-          {/* The product in use — warmer and more literal than a dreamy scene. */}
+          {/* The demo: story art, then the animal picker that drives it. */}
           <Reveal immediate delay={220} as="figure" className="relative">
             <div
               aria-hidden="true"
               className="pointer-events-none absolute -inset-6 -z-10 rounded-full bg-dream-500/16 blur-[90px]"
             />
-            {/* A plain rounded square — the artwork is the subject, so no
+            {/* A plain rounded rectangle — the artwork is the subject, so no
                 silhouette competes with it. The slow rise and fall is the only
                 movement, and the base layer stills it under reduced motion. */}
             <img
@@ -125,16 +111,15 @@ export default function Hero() {
               height="384"
               decoding="async"
               fetchPriority="high"
-              className="animate-float aspect-square w-full rounded-xl object-cover shadow-3"
+              className="animate-float aspect-[16/10] w-full rounded-xl object-cover object-top shadow-3"
             />
 
-            {/* Overlaps the image at every width. `relative z-10` is load-
-                bearing: `animate-float` sets `will-change: transform`, which
-                makes the image its own stacking context, and an in-flow card
-                pulled under it by the negative margin would be painted
-                behind it. */}
-            <figcaption className="relative z-10 -mt-10 flex justify-center lg:absolute lg:bottom-[-6%] lg:left-[-10%] lg:mt-0 lg:justify-start">
-              <TrialCard />
+            {/* Overlaps the image. `relative z-10` is load-bearing:
+                `animate-float` sets `will-change: transform`, which makes the
+                image its own stacking context, and an in-flow card pulled
+                under it by the negative margin would be painted behind it. */}
+            <figcaption className="relative z-10 -mt-10 px-s4 sm:px-s7">
+              <AnimalPicker />
             </figcaption>
           </Reveal>
         </div>

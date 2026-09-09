@@ -109,6 +109,12 @@
   --color-sun-300: #fed15c;
   --color-sun-400: #ffce4e; /* Google Play badge fill */
 
+  /* Discount red, for the campaign's "% OFF" badges. The plan sheet in the
+     app uses a lighter red that carries white text at 3.99:1 — below AA for
+     the small bold type on these badges — so the scale step here is #dc2626,
+     the closest red that clears it (4.84:1 on white). */
+  --color-flame-600: #dc2626;
+
   /* ---- Semantic aliases (the only colours components may reference) ------
      `text.tertiary` (#99a1af) is 2.60:1 on white and fails AA for body copy,
      so it is reserved for non-text and decorative use. `text-muted` is a
@@ -126,6 +132,8 @@
 
   --color-border-default: var(--color-mist-200);
   --color-border-strong: #c9cdd6;
+
+  --color-badge-discount: var(--color-flame-600);
 
   --color-action-primary: var(--color-dream-500);
   --color-action-primary-hover: var(--color-dream-600);

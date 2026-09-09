@@ -1,4 +1,4 @@
-import { finalCta } from '@/data/content'
+import { finalCta, promo } from '@/data/content'
 import Button from '@/components/ui/Button'
 import Countdown from '@/components/ui/Countdown'
 import Decor from '@/components/ui/Decor'
@@ -28,7 +28,7 @@ export default function FinalCta() {
               {finalCta.title}
             </h2>
 
-            <Countdown hours={finalCta.expiresInHours} label={finalCta.countdownLabel} onAccent />
+            <Countdown endsAt={promo.endsAt} label={finalCta.countdownLabel} onAccent />
 
             <p className="max-w-xl text-pretty text-md text-white lg:text-lg">{finalCta.body}</p>
 

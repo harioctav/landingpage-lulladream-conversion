@@ -1,8 +1,10 @@
 # LullaDream — Landing Page
 
-Warm-traffic **conversion** page for LullaDream (AI bedtime stories): it is
-shown to trial users and the email list, and its only job is to unlock the paid
-plan before the trial expires.
+**Campaign conversion page** for LullaDream (AI bedtime stories). Traffic
+arrives from the Instagram post about what a child's favourite animal says
+about them, so the page picks that thread straight up — choose the animal, see
+the story it becomes, then unlock the plan that can actually write it. The
+campaign runs a 58%-off Super Premium offer against a shared countdown.
 React + Vite + Tailwind CSS v4, governed by the token contract in
 `lulladream.md`. **Light theme** — see the palette note below.
 
@@ -31,40 +33,55 @@ src/
   lib/cx.js                 Class-name joiner
   data/content.js           All page copy, as data
   components/ui/            Button, Icon, Logo, Section, Decor, Starfield,
-                            Countdown, Photo, Reveal, BlobDefs
+                            AnimalPicker, PromoBar, Countdown, Photo, Reveal,
+                            BlobDefs
   components/sections/      The 6 page sections, in render order
   App.jsx                   Skip link · Navbar · main · Footer
 ```
 
 ## Page structure
 
-Follows the conversion brief top to bottom:
+A promo bar sits above the navbar with the discount and the live countdown,
+then, top to bottom:
 
-1. **Hero** — urgency headline, subheadline, a *single* primary CTA, and a
-   trial-status card ("2 stories left") floating over the photograph.
-2. **Free vs Premium** — one comparison table, Premium column highlighted.
-3. **Pricing** — monthly and annual, "Most popular" + "Save 50%" on the annual
-   plan, with the result-carrying testimonial directly above the table.
+1. **Hero** — the campaign headline, the discount, a *single* primary CTA, and
+   the **animal picker**: type the child's name, tap the animal from the
+   Instagram carousel, and read the story title it becomes.
+2. **Free / Premium / Super Premium** — one comparison table, Super Premium
+   highlighted, because voice cloning and the unlimited animal stories the
+   campaign promises only exist on that tier.
+3. **Pricing** — a Monthly/Yearly switch over the two plan cards from the app,
+   with the result-carrying testimonial directly above them.
 4. **Testimonial / trust** — rating, review marquee, checkout trust badges.
-5. **Guarantee** — money-back, cancel-in-one-tap, secure checkout.
-6. **Final CTA banner** — live trial-expiry countdown.
+5. **Guarantee** — 7-day trial, money-back, cancel-in-one-tap, secure checkout.
+6. **Final CTA banner** — the same countdown, in full.
 
-Copy leads with **loss aversion**, not features: what is ending (the ritual,
-the free stories) comes before what is offered. The hero photograph is the
-product *in use* — a laughing child mid-story — rather than the awareness
-page's dreamy night imagery, and the hero no longer fills the viewport, so the
-comparison table starts before the fold on a laptop.
+Copy carries the campaign the whole way down: the hero picks up the Instagram
+post's promise, the comparison table answers "which plan writes that story",
+and the testimonials name animals rather than features.
 
-Two conversion rules the layout enforces:
+Three conversion rules the layout enforces:
 
 - **One CTA in the hero.** A secondary button there splits the decision; every
   other CTA on the page points at `#pricing` or checkout.
+- **The demo comes before the ask.** The picker is the first interactive thing
+  on the page, and it costs nothing to use.
 - **The risk reducer sits with the price**, inside each plan card, not three
   sections below it.
 
-The countdown in `FinalCta` is seeded from `finalCta.expiresInHours`. Wire it to
-the account's real `trialEndsAt` before shipping — a countdown that resets on
-every reload is a dark pattern, not urgency.
+### The picker is not the generator
+
+`AnimalPicker` renders written copy from `hero.picker.animals` — no model call.
+Wire it to the real endpoint when there is one, but keep the response instant:
+the point is the feeling of one tap, not a spinner.
+
+### One deadline, one source
+
+`promo.endsAt` in `src/data/content.js` is an ISO timestamp with an explicit
+offset, so it means the same moment for a parent in Jakarta and one in
+Singapore. The promo bar and the final CTA both read it, so they cannot
+disagree. `Countdown` still accepts `hours` for a per-visitor window, and falls
+back to it if `endsAt` fails to parse rather than rendering a broken timer.
 
 ## The squashed-SVG fix
 
@@ -165,6 +182,12 @@ illustrated story covers.
    is reserved for decoration and `text-muted` is added as a documented step —
    the lightest grey still clearing 4.5:1 on all three light surfaces (5.76 /
    5.00 / 4.62).
+3. **`badge-discount` (`#dc2626`).** The app's plan sheet sets its "% OFF"
+   badges in a lighter red that carries white text at 3.99:1 — under AA for
+   the small bold type on a badge. This scale step is the closest red that
+   clears it (4.84:1 on white). The "Best value" badge likewise takes
+   `sun-300` with `ink-900` text rather than the app's white-on-orange, which
+   fails at any size.
 
 Text on the purple CTA band is solid white throughout: translucent white drops
 to 3.6:1 there, so hierarchy comes from size and weight instead of opacity.
@@ -240,8 +263,8 @@ merely declared.
 Target **WCAG 2.2 AA**. axe-core at 1440px and 390px: **0 violations**.
 
 - Skip link is the first tab stop and reveals on focus.
-- The Free/Premium comparison is one real `<table>` at every width, with row
-  and column headers. It uses `border-separate` with zero spacing rather than
+- The plan comparison is one real `<table>` at every width, with row and column
+  headers. It uses `border-separate` with zero spacing rather than
   `border-collapse`, because collapsed borders ignore `border-radius` — the
   highlighted Premium column needs its own 27px corners to curve inside the
   container's 28px ones instead of being sliced by `overflow-hidden`. The cost
@@ -253,8 +276,13 @@ Target **WCAG 2.2 AA**. axe-core at 1440px and 390px: **0 violations**.
 - The countdown is a `role="timer"` whose digits are `aria-hidden`; a visually
   hidden sentence states the remaining time in whole hours and minutes, because
   a per-second live region is unusable with a screen reader.
-- The trial meter is a real `<progress>` with an accessible label, so the ratio
-  is announced rather than implied by a coloured bar.
+- The animal picker is a labelled group of toggle buttons — each a normal tab
+  stop with native Enter/Space, `aria-pressed` for state — and the story
+  preview is a polite live region, so the new title is announced rather than
+  changing silently. The name field has a real `<label>`.
+- The Monthly/Yearly control is two toggle buttons in a labelled group rather
+  than a custom slider, so the period in view is announced. The moving pill is
+  a sibling that translates, so the labels never re-flow as it slides.
 - Every decorative element (starfield, shapes, glows) is `aria-hidden` and
   unfocusable; ornaments are hidden below `lg`, where they land on the copy.
 - The testimonial marquee is a keyboard tab stop and pauses on focus-within.
@@ -274,13 +302,18 @@ to stacked blocks, and the plan cards stack with the annual card losing its
 
 ## Known gaps before launch
 
-- **Prices, the trial counter and the countdown are placeholder content.**
-  `$9.99` / `$4.99`, "2 stories left" and `expiresInHours: 48` all live in
-  `src/data/content.js` and must be driven by the account before launch.
-  Claims made in copy — the 30-day money-back guarantee, the 4.9 rating, the
-  "2,400+ parents" — need to be true or removed.
+- **Every figure must match checkout.** The prices, discounts and coin
+  allowances were transcribed from the app's plan sheet into
+  `src/data/content.js`; re-check them against what checkout actually charges
+  before spending on ads. `promo.endsAt` is a placeholder campaign deadline.
+  Claims made in copy — the 30-day money-back guarantee, the 7-day trial, the
+  4.9 rating, the "2,400+ parents" — need to be true or removed.
 
-- **Checkout is not wired.** Both plan CTAs point at `#checkout`.
+- **Checkout is not wired.** All plan CTAs point at `#checkout`.
+
+- **The animal chips use emoji**, because the Instagram creative's illustrated
+  animals are not in the asset folder. They render differently per platform;
+  swap in the campaign artwork for a consistent lockup.
 
 - **The hero image is story artwork, not photography.** `cover-4.avif`
   (Phra Aphai Mani) is used by request. The brief asks for a child mid-laugh

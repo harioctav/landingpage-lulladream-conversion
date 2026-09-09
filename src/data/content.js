@@ -11,120 +11,289 @@ export const nav = {
     { label: 'Plans', href: '#pricing' },
     { label: 'Guarantee', href: '#guarantee' },
   ],
-  cta: { label: 'Unlock Unlimited Stories', href: '#pricing' },
+  cta: { label: 'Create Their Story', href: '#pricing' },
+}
+
+/* ---------------------------------------------------------------------------
+   PROMO
+   `endsAt` is the single source of truth for every countdown on the page —
+   the top bar and the final CTA both read it. Set it to the real campaign
+   deadline; it is an ISO timestamp with an explicit offset so it means the
+   same moment for a parent in Jakarta and one in Singapore.
+   ------------------------------------------------------------------------ */
+export const promo = {
+  badge: '58% OFF',
+  plan: 'Super Premium',
+  headline: 'Super Premium is 58% off',
+  sub: 'Instagram readers only — the animal-story plan, at less than a coffee a month.',
+  note: 'Offer ends in',
+  endsAt: '2026-09-30T23:59:59+07:00',
+  cta: { label: 'See the offer', href: '#pricing' },
+  expired: 'This offer has closed — current pricing is below.',
 }
 
 /* ---------------------------------------------------------------------------
    1 — HERO
-   Loss aversion first: the trial is what is ending, not a feature that is
-   missing. One primary CTA only; a second button here costs conversions.
+   Campaign traffic arrives from the "what your child's favourite animal says
+   about them" post, so the hero picks that thread straight up: choose the
+   animal, see the story it becomes. The picker is the demo — a parent should
+   feel the generate step before they are asked for anything.
    ------------------------------------------------------------------------ */
 export const hero = {
-  eyebrow: 'Your free trial is almost over',
-  title: ['Don’t Let Tonight’s Story', 'Be the Last One'],
-  body: 'Unlock unlimited personalised stories, every voice style, and offline downloads for road trips and flights.',
-  cta: { label: 'Unlock Unlimited Stories', href: '#pricing' },
-  reassurance: 'Cancel any time · 30-day money-back guarantee · Keeps every story you’ve made',
+  eyebrow: 'From our favourite-animal post',
+  title: ['Their Favourite Animal,', 'Tonight’s Bedtime Hero'],
+  body: 'You found out what their favourite animal says about them. Now make that animal the star of tonight’s story — with your child’s name in it, read in your own voice.',
+  cta: { label: 'Create Their Animal Story', href: '#pricing' },
+  reassurance: 'Cancel any time · 7-day free trial on Super Premium · Works offline',
   image: {
     src: covers.cover4,
-    alt: 'Cover art from Phra Aphai Mani: the prince plays his magic flute on the shore as a sea ogress rises from the waves and mermaids look on',
+    alt: 'Cover art from a LullaDream story: a young hero playing a magic flute on the shore as a sea creature rises from the waves',
   },
-  // The urgency card floating over the hero photo.
-  trial: {
-    label: 'Your trial',
-    remaining: '2 stories left',
-    note: 'Then bedtime goes quiet until you upgrade.',
-    used: 7,
-    total: 9,
-    usedLabel: '7 of 9 free stories used',
+  picker: {
+    label: 'Try it now',
+    nameLabel: 'Your child’s name',
+    namePlaceholder: 'e.g. Aluna',
+    fallbackName: 'Your child',
+    animalLabel: 'Their favourite animal',
+    previewLabel: 'Tonight’s story',
+    animals: [
+      {
+        id: 'lion',
+        emoji: '🦁',
+        name: 'Lion',
+        title: '{name} and the Lion Who Lost His Roar',
+        trait: 'Bold and loud — and secretly gentle at bedtime.',
+      },
+      {
+        id: 'puppy',
+        emoji: '🐶',
+        name: 'Puppy',
+        title: '{name} and the Puppy Who Waited by the Door',
+        trait: 'Loyal, warm, and never wants to be alone.',
+      },
+      {
+        id: 'cat',
+        emoji: '🐱',
+        name: 'Cat',
+        title: '{name} and the Cat Who Owned the Moon',
+        trait: 'Curious and independent, on their own terms.',
+      },
+      {
+        id: 'horse',
+        emoji: '🐴',
+        name: 'Horse',
+        title: '{name} and the Horse Who Ran to the Sea',
+        trait: 'Free-spirited, always halfway to the next adventure.',
+      },
+      {
+        id: 'snake',
+        emoji: '🐍',
+        name: 'Snake',
+        title: '{name} and the Snake Who Learned to Sing',
+        trait: 'Watchful and clever, slow to trust — then all in.',
+      },
+      {
+        id: 'dino',
+        emoji: '🦖',
+        name: 'T-Rex',
+        title: '{name} and the T-Rex Who Was Afraid of the Dark',
+        trait: 'Big feelings in a small body. Braver than they know.',
+      },
+    ],
+    cta: { label: 'Create this story', href: '#pricing' },
   },
   stats: [
     { value: '4.9★', label: 'App Store rating' },
     { value: '2,400+', label: 'Parents subscribed' },
-    { value: '30 days', label: 'Money-back guarantee' },
+    { value: '58%', label: 'Off Super Premium' },
   ],
 }
 
 /* ---------------------------------------------------------------------------
-   2 — FREE vs PREMIUM
+   2 — FREE vs PREMIUM vs SUPER PREMIUM
+   Three columns, because the page now sells two paid tiers and the thing the
+   campaign promises — the animal story in your own cloned voice — only exists
+   on the top one.
    ------------------------------------------------------------------------ */
 export const comparison = {
-  eyebrow: 'Free vs Premium',
-  title: 'What changes the night you upgrade',
-  body: 'You have already heard what LullaDream sounds like. Here is everything the free plan keeps behind the curtain.',
+  eyebrow: 'What each plan unlocks',
+  title: 'Where the animal stories actually live',
+  body: 'Every plan writes stories. Only one of them writes an unlimited number, in your voice, with your child’s favourite animal in the lead.',
   columns: {
-    free: { name: 'Free plan', note: 'What you have now', price: '3 stories / week' },
-    premium: {
-      name: 'Premium',
-      note: 'Most popular',
-      price: 'Unlimited, every night',
+    free: { name: 'Free', note: 'What you have now', price: '3 stories / week' },
+    premium: { name: 'Premium', note: 'Unlimited stories', price: 'From USD 2.28 / month' },
+    superPremium: {
+      name: 'Super Premium',
+      note: 'Best value · 58% off',
+      price: '7 days free, then USD 3.99 / month',
     },
   },
   rows: [
-    { label: 'Stories', free: '3 per week', premium: 'Unlimited — a new one every night', highlight: true },
-    { label: 'Personalisation', free: 'Child’s name only', premium: 'Name, friends, pets, favourite worlds' },
-    { label: 'Narrator voices', free: '1 standard voice', premium: 'Every voice style, including your own cloned voice', highlight: true },
-    { label: 'Offline downloads', free: false, premium: 'Road trips, flights, patchy Wi-Fi', highlight: true },
-    { label: 'Story library', free: 'Last 5 stories', premium: 'Saved forever, replay any night' },
-    { label: 'Children per account', free: '1 child', premium: 'Up to 4 children' },
-    { label: 'New themes each month', free: false, premium: 'First access, every month' },
-    { label: 'Support', free: 'Help centre', premium: 'Priority replies within a day' },
+    {
+      label: 'Bedtime stories',
+      free: '3 per week',
+      premium: 'Unlimited',
+      superPremium: 'Unlimited',
+      highlight: true,
+    },
+    {
+      label: 'Animal personalisation',
+      free: 'Child’s name only',
+      premium: 'Name, favourite animal, friends, pets',
+      superPremium: 'Name, favourite animal, friends, pets',
+    },
+    {
+      label: 'Voice templates',
+      free: '1 standard voice',
+      premium: 'Unlimited voice templates',
+      superPremium: 'Unlimited voice templates',
+    },
+    {
+      label: 'Voice cloning — your own voice',
+      free: false,
+      premium: false,
+      superPremium: 'Included. Bedtime still sounds like you.',
+      highlight: true,
+    },
+    {
+      label: 'Coins for custom stories',
+      free: false,
+      premium: '100 / month · 1,200 / year',
+      superPremium: '400 / month · 4,800 / year',
+      highlight: true,
+    },
+    {
+      label: 'Offline downloads',
+      free: false,
+      premium: 'Road trips, flights, patchy Wi-Fi',
+      superPremium: 'Road trips, flights, patchy Wi-Fi',
+    },
+    {
+      label: 'Story library',
+      free: 'Last 5 stories',
+      premium: 'Saved forever, replay any night',
+      superPremium: 'Saved forever, replay any night',
+    },
+    {
+      label: 'Free trial',
+      free: false,
+      premium: false,
+      superPremium: '7 days free, cancel any time',
+      highlight: true,
+    },
+    {
+      label: 'Support',
+      free: 'Help centre',
+      premium: 'Priority replies within a day',
+      superPremium: 'Priority replies within a day',
+    },
   ],
-  cta: { label: 'Keep the Magic — Upgrade Now', href: '#pricing' },
+  cta: { label: 'Unlock Super Premium', href: '#pricing' },
 }
 
 /* ---------------------------------------------------------------------------
    3 — PRICING
-   The featured quote sits directly above the table, per the brief.
+   Mirrors the plan sheet in the app: a Monthly/Yearly switch over two cards,
+   each with its discount badge, struck-through list price and coin allowance.
+   Every figure here must match what checkout actually charges.
    ------------------------------------------------------------------------ */
 export const pricing = {
   eyebrow: 'Choose your plan',
   title: 'Less than one bedtime book, every month',
-  body: 'One picture book at the shop costs more than a whole month of unlimited stories. Pick the plan that fits, change or cancel it whenever you like.',
+  body: 'One picture book at the shop costs more than a month of unlimited stories. Discounts below are part of the Instagram campaign and end with the countdown.',
   featuredQuote: {
     quote:
-      'We upgraded the night our free stories ran out. My son asks for LullaDream every single night now — he even names the characters before we start.',
+      'She picked the lion. Ten minutes later she was hearing a story about a lion with her own name in it, in my voice. She has asked for LullaDream every night since.',
     name: 'Amara R.',
-    role: 'Parent of a 4-year-old · Premium since March',
+    role: 'Parent of a 4-year-old · Super Premium',
     avatar: avatars.avatar1,
   },
-  plans: [
-    {
-      id: 'monthly',
-      name: 'Monthly',
-      price: '$9.99',
-      unit: '/ month',
-      summary: 'Full Premium, month to month.',
-      note: 'Billed monthly. Cancel any time.',
-      cta: { label: 'Start My Premium Plan', href: '#checkout' },
-      variant: 'outline',
-      features: [
-        'Unlimited personalised stories',
-        'Every narrator voice + your own voice',
-        'Offline downloads',
-        'Up to 4 children',
-      ],
-    },
-    {
-      id: 'annual',
-      name: 'Annual',
-      badge: 'Most popular',
-      price: '$4.99',
-      unit: '/ month',
-      billed: 'Billed $59.88 once a year',
-      save: 'Save 50%',
-      summary: 'Two nights of stories a month pays for it.',
-      note: '30-day money-back guarantee. Cancel any time.',
-      cta: { label: 'Unlock Unlimited Stories', href: '#checkout' },
-      variant: 'primary',
-      features: [
-        'Everything in Monthly',
-        'Two months free vs. paying monthly',
-        'First access to new themes',
-        'Priority support',
-      ],
-    },
+  cycles: [
+    { id: 'monthly', label: 'Monthly' },
+    { id: 'yearly', label: 'Yearly' },
   ],
+  cycleLabel: 'Billing period',
+  plans: {
+    monthly: [
+      {
+        id: 'premium-monthly',
+        name: 'Premium',
+        discount: '55% OFF',
+        was: 'USD 5.13',
+        price: 'USD 2.28',
+        unit: '/ month',
+        summary: 'Unlock the full story library and create magical bedtime stories for your child.',
+        features: [
+          { strong: 'Unlimited', text: 'bedtime stories' },
+          { strong: 'Unlimited', text: 'voice templates' },
+          { strong: 'Get 100 coins', text: 'to create custom stories' },
+        ],
+        cta: { label: 'Start My Premium Plan', href: '#checkout' },
+        note: 'Billed monthly. Cancel any time.',
+      },
+      {
+        id: 'super-monthly',
+        name: 'Super Premium',
+        badge: 'Best value',
+        discount: '58% OFF',
+        trial: '7-day free trial',
+        was: 'USD 9.69',
+        price: 'USD 0.00',
+        then: 'Then USD 3.99 / month. Cancel any time.',
+        summary: 'Take storytelling to the next level with full creative control.',
+        features: [
+          { strong: 'Includes', text: 'all Premium features' },
+          {
+            pill: 'Exclusive',
+            strong: 'Get 400 coins',
+            text: 'to create custom stories and clone your voice',
+          },
+        ],
+        cta: { label: 'Start My 7-Day Free Trial', href: '#checkout' },
+        note: 'Nothing charged today. 30-day money-back guarantee after that.',
+        featured: true,
+      },
+    ],
+    yearly: [
+      {
+        id: 'premium-yearly',
+        name: 'Premium',
+        discount: '54% OFF',
+        was: 'USD 57.00',
+        price: 'USD 26.22',
+        unit: '/ year',
+        summary: 'Unlock the full story library and create magical bedtime stories for your child.',
+        features: [
+          { strong: 'Unlimited', text: 'bedtime stories' },
+          { strong: 'Unlimited', text: 'voice templates' },
+          { strong: 'Get 1,200 coins', text: 'to create custom stories' },
+        ],
+        cta: { label: 'Start My Premium Plan', href: '#checkout' },
+        note: 'Billed once a year. Cancel any time.',
+      },
+      {
+        id: 'super-yearly',
+        name: 'Super Premium',
+        badge: 'Best value',
+        discount: '58% OFF',
+        was: 'USD 114.00',
+        price: 'USD 47.31',
+        unit: '/ year',
+        summary: 'Take storytelling to the next level with full creative control.',
+        features: [
+          { strong: 'Includes', text: 'all Premium features' },
+          {
+            pill: 'Exclusive',
+            strong: 'Get 4,800 coins',
+            text: 'to create custom stories and clone your voice',
+          },
+        ],
+        cta: { label: 'Unlock Super Premium', href: '#checkout' },
+        note: 'Billed once a year. 30-day money-back guarantee.',
+        featured: true,
+      },
+    ],
+  },
   anchor: 'That’s less than one bedtime book at the store — for a new story every night.',
   reassurance: 'Cancel any time · Secure checkout · Money back within 30 days',
 }
@@ -143,37 +312,37 @@ export const proof = {
   quotes: [
     {
       quote:
-        'The three free stories a week were never enough. Now there is a new one every night and she still asks for the same voice.',
+        'He chose the T-Rex, of course. Hearing a dinosaur story with his name in it — and mine reading it — beat every book on the shelf.',
       name: 'Priya S.',
-      role: 'Premium · Parent of a 3-year-old',
+      role: 'Super Premium · Parent of a 3-year-old',
       avatar: avatars.avatar3,
     },
     {
       quote:
-        'I travel most weeks. Hearing my own cloned voice read to him while I am in another city is worth far more than five dollars a month.',
+        'I travel most weeks. Hearing my own cloned voice read to him while I am in another city is worth far more than four dollars a month.',
       name: 'Daniel K.',
-      role: 'Premium · Parent of a 5-year-old',
+      role: 'Super Premium · Parent of a 5-year-old',
       avatar: avatars.avatar2,
     },
     {
       quote:
-        'We downloaded eight stories before a nine-hour flight. Not one meltdown. That alone paid for the year.',
+        'We downloaded eight animal stories before a nine-hour flight. Not one meltdown. That alone paid for the year.',
       name: 'Tomas B.',
       role: 'Premium · Parent of twins, age 6',
       avatar: avatars.avatar4,
     },
     {
       quote:
-        'I cancelled two other subscriptions to keep this one. It is the only part of the evening nobody argues about.',
+        'The free plan gave us three stories a week and she wanted a new animal every night. Upgrading took thirty seconds.',
       name: 'Grace O.',
       role: 'Premium · Parent of a 4-year-old',
       avatar: avatars.avatar5,
     },
     {
       quote:
-        'Upgrading took thirty seconds and every story we made during the trial was still there. That mattered to her more than to me.',
+        'Every story we made during the trial was still there after we subscribed. That mattered to her more than to me.',
       name: 'Amara R.',
-      role: 'Premium · Parent of a 4-year-old',
+      role: 'Super Premium · Parent of a 4-year-old',
       avatar: avatars.avatar1,
     },
   ],
@@ -184,9 +353,14 @@ export const proof = {
    ------------------------------------------------------------------------ */
 export const guarantee = {
   eyebrow: 'Nothing to lose',
-  title: 'Try Premium for a month. If bedtime isn’t easier, we’ll refund it.',
-  body: 'No forms, no phone call, no “are you sure?” loop. Email us within 30 days and you get every penny back — and the stories you already made stay in your library either way.',
+  title: 'Start free. If bedtime isn’t easier, we’ll refund it.',
+  body: 'Super Premium starts with seven free days — nothing is charged until they are over. After that, email us within 30 days and you get every penny back, and the stories you already made stay in your library either way.',
   points: [
+    {
+      icon: 'sparkle',
+      title: '7 days free on Super Premium',
+      body: 'Full creative control, voice cloning included. Nothing charged today.',
+    },
     {
       icon: 'shield',
       title: '30-day money-back guarantee',
@@ -202,11 +376,6 @@ export const guarantee = {
       title: 'Secure checkout',
       body: 'Payments handled by an encrypted, PCI-compliant provider. We never see your card.',
     },
-    {
-      icon: 'download',
-      title: 'Your stories stay yours',
-      body: 'Everything you made during the trial is kept, downloadable, and never deleted.',
-    },
   ],
   image: {
     src: photos.restingChild,
@@ -216,17 +385,15 @@ export const guarantee = {
 
 /* ---------------------------------------------------------------------------
    6 — FINAL CTA
-   `expiresInHours` drives the countdown — set it from the user's real trial
-   end date when this page is wired to the app.
    ------------------------------------------------------------------------ */
 export const finalCta = {
-  eyebrow: 'Trial ending',
-  title: 'Keep the magic going tonight',
-  body: 'When the countdown hits zero your free stories stop. Upgrade now and tonight’s story plays exactly like the last one did.',
-  expiresInHours: 48,
-  countdownLabel: 'Your free stories end in',
-  cta: { label: 'Unlock Unlimited Stories', href: '#pricing' },
-  secondary: 'From $4.99 / month · Cancel any time · 30-day money-back guarantee',
+  eyebrow: 'Campaign offer',
+  title: 'Pick their animal. We’ll write the rest.',
+  body: 'Super Premium is 58% off until the countdown runs out — unlimited animal stories, your own cloned voice, and seven days free before anything is charged.',
+  countdownLabel: 'Offer ends in',
+  cta: { label: 'Start My 7-Day Free Trial', href: '#pricing' },
+  secondary: 'Then USD 3.99 / month · Cancel any time · 30-day money-back guarantee',
+  expired: 'This campaign offer has closed. Current pricing is in the plans above.',
 }
 
 export const footer = {
@@ -257,9 +424,9 @@ export const footer = {
     },
   ],
   socials: [
-    { label: 'Instagram', icon: 'instagram', href: '#' },
+    { label: 'Instagram', icon: 'instagram', href: 'https://www.instagram.com/lulladream.ai/' },
     { label: 'X', icon: 'x', href: '#' },
     { label: 'YouTube', icon: 'youtube', href: '#' },
   ],
-  copyright: '© 2025 LullaDream. All rights reserved.',
+  copyright: '© 2026 LullaDream. All rights reserved.',
 }
