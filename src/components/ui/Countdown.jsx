@@ -10,6 +10,12 @@ import cx from '@/lib/cx'
  * stays as a fallback for a per-visitor window, and is also what is used if
  * `endsAt` fails to parse rather than showing a broken timer.
  *
+ * Every unit box is the same width. The row is a grid whose columns are all
+ * `1fr`, so they resolve to the widest box instead of each hugging its own
+ * caption — "SECONDS" is twice as wide as "DAYS", and boxes that followed
+ * their captions came out visibly uneven. Captions abbreviate wherever the
+ * full words would not fit, for the same reason.
+ *
  * Accessibility: the ticking digits are `aria-hidden`, because a per-second
  * live region is unusable with a screen reader. The visually hidden sentence
  * beside them states the same thing once, in whole days, hours and minutes.
@@ -42,23 +48,26 @@ function sentence(left) {
 }
 
 /**
- * `sm` is for the hero card, where four unit boxes at the banner size overflow
- * a 24rem card. It drops the colons as well as tightening the box: at this
- * size the separators are noise rather than structure.
+ * `md` is the banner size: a centred row sized to its widest box, with colons
+ * sitting in the gaps. `sm` is for cards: the row fills the card's width in
+ * equal columns and drops the colons, which are noise at that size.
  */
 const sizes = {
   md: {
-    box: 'min-w-[3.75rem] px-s4 py-s4 sm:min-w-[4.5rem] sm:px-s5',
+    row: 'inline-grid auto-cols-fr grid-flow-col gap-s5 sm:gap-s6',
+    box: 'px-s4 py-s4 sm:px-s6',
     digits: 'text-d3 sm:text-d2',
     caption: 'text-xs',
-    gap: 'gap-s3 sm:gap-s4',
+    // Full words only where there is room for four of them.
+    fullCaptionFrom: 'sm',
     separators: true,
   },
   sm: {
-    box: 'min-w-[3.25rem] px-s3 py-s3',
+    row: 'grid w-full auto-cols-[minmax(0,1fr)] grid-flow-col gap-s2',
+    box: 'px-s2 py-s3',
     digits: 'text-d3',
     caption: 'text-[10px]',
-    gap: 'gap-s2',
+    fullCaptionFrom: null,
     separators: false,
   },
 }
@@ -97,10 +106,10 @@ export default function Countdown({
   if (!left) return null
 
   const units = [
-    left.days > 0 && { value: pad(left.days), label: 'days', short: 'd' },
-    { value: pad(left.hours), label: 'hours', short: 'h' },
-    { value: pad(left.minutes), label: 'minutes', short: 'm' },
-    { value: pad(left.seconds), label: 'seconds', short: 's' },
+    left.days > 0 && { value: pad(left.days), label: 'days', abbr: 'days', short: 'd' },
+    { value: pad(left.hours), label: 'hours', abbr: 'hrs', short: 'h' },
+    { value: pad(left.minutes), label: 'minutes', abbr: 'min', short: 'm' },
+    { value: pad(left.seconds), label: 'seconds', abbr: 'sec', short: 's' },
   ].filter(Boolean)
 
   if (compact) {
@@ -121,7 +130,7 @@ export default function Countdown({
   const captionTone = onAccent ? 'text-white' : 'text-text-muted'
 
   return (
-    <div role="timer" className="flex flex-col items-center gap-s5">
+    <div role="timer" className="flex w-full flex-col items-center gap-s5">
       {label && (
         <p
           className={cx(
@@ -135,10 +144,16 @@ export default function Countdown({
 
       <p className="sr-only">{sentence(left)}</p>
 
-      <div aria-hidden="true" className={cx('flex items-center', scale.gap)}>
+      <div aria-hidden="true" className={scale.row}>
         {units.map((unit, i) => (
-          <span key={unit.label} className={cx('flex items-center', scale.gap)}>
-            <span className={cx('flex flex-col items-center rounded-md border', scale.box, box)}>
+          <span key={unit.label} className="relative flex">
+            <span
+              className={cx(
+                'flex w-full flex-col items-center rounded-md border',
+                scale.box,
+                box,
+              )}
+            >
               <span className={cx('font-bold leading-none tabular-nums', scale.digits)}>
                 {unit.value}
               </span>
@@ -149,11 +164,28 @@ export default function Countdown({
                   captionTone,
                 )}
               >
-                {unit.label}
+                {scale.fullCaptionFrom ? (
+                  <>
+                    <span className="sm:hidden">{unit.abbr}</span>
+                    <span className="max-sm:hidden">{unit.label}</span>
+                  </>
+                ) : (
+                  unit.abbr
+                )}
               </span>
             </span>
+
+            {/* The colon lives in the gap, absolutely positioned, so it never
+                takes a grid column and never skews the equal widths. */}
             {scale.separators && i < units.length - 1 && (
-              <span className={cx('text-d3 font-bold leading-none', captionTone)}>:</span>
+              <span
+                className={cx(
+                  'absolute left-full top-1/2 w-s5 -translate-y-1/2 text-center text-d3 font-bold leading-none sm:w-s6',
+                  captionTone,
+                )}
+              >
+                :
+              </span>
             )}
           </span>
         ))}

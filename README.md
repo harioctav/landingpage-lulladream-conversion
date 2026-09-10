@@ -2,9 +2,9 @@
 
 **Campaign conversion page** for LullaDream (AI bedtime stories). Traffic
 arrives from the Instagram post about what a child's favourite animal says
-about them, so the page picks that thread straight up — choose the animal, see
-the story it becomes, then unlock the plan that can actually write it. The
-campaign runs a 58%-off Super Premium offer against a shared countdown.
+about them, so the page picks that thread straight up and sends visitors to a
+three-step **animal-story builder** (`/create/`) to make one. The campaign runs
+a 58%-off Super Premium offer against a shared countdown on both pages.
 React + Vite + Tailwind CSS v4, governed by the token contract in
 `lulladream.md`. **Light theme** — see the palette note below.
 
@@ -31,12 +31,21 @@ src/
                             (logo, photography, avatars, shapes)
   lib/blobPaths.js          Generated organic photo silhouettes
   lib/cx.js                 Class-name joiner
-  data/content.js           All page copy, as data
+  lib/storyGenerator.js     Story generator for the builder — a STUB, see below
+  data/content.js           All landing-page copy, as data
+  data/create.js            Builder copy and options
   components/ui/            Button, Icon, Logo, Section, Decor, Starfield,
                             PromoBar, Countdown, Photo, Reveal, BlobDefs
-  components/sections/      The 6 page sections, in render order
-  App.jsx                   Skip link · Navbar · main · Footer
+  components/sections/      The 6 landing-page sections, in render order
+  pages/CreateStory.jsx     The animal-story builder
+  App.jsx                   Landing page: skip link · Navbar · main · Footer
+  main.jsx · create.jsx     Entry points for the two pages
+index.html                  Landing page
+create/index.html           Builder, served at /create/
 ```
+
+Two real HTML entries (`build.rollupOptions.input` in `vite.config.js`), so
+`/create/` works on any static host without a rewrite rule.
 
 ## Page structure
 
@@ -76,20 +85,58 @@ Three conversion rules the layout enforces:
 `links` in `src/data/content.js` holds the two outbound destinations, so they
 can be re-pointed in one edit:
 
-- `createStory` — the hero and navbar CTAs. Building the story happens in the
-  app, not on this page; nothing here asks the visitor to fill anything in.
+- `createStory` — the hero and navbar CTAs, `./create/`. Nothing on the
+  landing page asks the visitor to fill anything in; the builder does that.
+  It is relative rather than root-absolute so a sub-path deploy still works.
 - `checkout` — the plan cards.
-
-`createStory` is a placeholder URL. Point it at the real builder (with whatever
-campaign parameters attribution needs) before the ads run.
 
 ### One deadline, one source
 
 `promo.endsAt` in `src/data/content.js` is an ISO timestamp with an explicit
 offset, so it means the same moment for a parent in Jakarta and one in
-Singapore. The promo bar and the final CTA both read it, so they cannot
-disagree. `Countdown` still accepts `hours` for a per-visitor window, and falls
+Singapore. Every countdown on both pages — promo bar, hero offer card,
+closing banner, builder result — reads it, so none of them can disagree.
+
+The unit boxes are a grid of equal `1fr` columns, so every box takes the
+widest one's width instead of hugging its own caption ("SECONDS" is twice as
+wide as "DAYS"). Colons sit absolutely in the gaps so they never take a column,
+and captions abbreviate (HRS, MIN, SEC) wherever four full words would not fit. `Countdown` still accepts `hours` for a per-visitor window, and falls
 back to it if `endsAt` fails to parse rather than rendering a broken timer.
+
+## The story builder
+
+`create/index.html` → `src/pages/CreateStory.jsx`. Modelled on the app's
+"Generate Your Story" flow, cut to the three decisions an animal story needs:
+
+1. **Animal** — first, because the visitor arrives having just picked one on
+   Instagram. Eight animals plus "Another animal" with a free-text field.
+   `/create/?animal=lion` arrives with it chosen, for deep links from ads.
+2. **Child** — name (required, 50 characters) and age band.
+3. **Mood** — Gentle, Adventure, Funny, Heartwarming; Gentle is preselected.
+
+Title, moral, story type and duration from the app flow are left to defaults:
+each extra step is a place to drop off. Generate shows the app's bottom-sheet
+loader, then the story, an upsell with the same countdown, and a labelled
+"Listen in your own voice 🔒" button — a bare play icon that led to pricing
+would be a bait-and-switch.
+
+**`src/lib/storyGenerator.js` is a stub.** It assembles the story from written
+templates (animal body × mood opening and closing) and never calls the model.
+The page awaits `generateStory({ name, age, animal, mood })` exactly as it
+would a network call, so replacing that function body with the real API
+request changes nothing else. The loader tracks time, not the request: it runs
+to 99% over a 2.4s minimum and only reaches 100 when the story is back.
+
+Implementation notes worth keeping:
+
+- Options are native radio inputs, visually hidden, inside card labels, styled
+  with `has-checked` / `has-focus-visible`. Arrow keys, grouping and the focus
+  ring all come from the real control.
+- Focus moves to each step's heading on navigation (not on first paint), so a
+  screen-reader user hears where they landed.
+- The card uses `overflow-clip`, not `overflow-hidden`: hidden would make it a
+  scroll container, and the sticky Next bar and Listen button would stick to
+  the card rather than the viewport.
 
 ## The squashed-SVG fix
 
@@ -315,11 +362,14 @@ to stacked blocks, and the plan cards stack with the annual card losing its
 
 - **Checkout is not wired.** All plan CTAs point at `#checkout`.
 
-- **The hero's animal examples use emoji**, because the Instagram creative's
-  illustrated animals are not in the asset folder. They render differently per
-  platform; swap in the campaign artwork for a consistent lockup.
+- **The builder does not call the model.** `src/lib/storyGenerator.js` is a
+  template stub; wire it to the real generation API before launch. Until then
+  every "generated" story is written copy.
 
-- **`links.createStory` is a placeholder URL.** Every hero CTA points at it.
+- **The builder's animals and moods use emoji**, because the Instagram
+  creative's illustrated animals are not in the asset folder. They render
+  differently per platform; swap in the campaign artwork for a consistent
+  lockup.
 
 - **The hero image is story artwork, not photography.** `cover-4.avif`
   (Phra Aphai Mani) is used by request. The brief asks for a child mid-laugh

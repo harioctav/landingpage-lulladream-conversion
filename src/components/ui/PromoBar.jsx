@@ -9,8 +9,11 @@ import { Container } from './Section'
  *
  * It states the discount and the deadline in one line; the deadline is the
  * shared `promo.endsAt`, so this and the final CTA can never disagree.
+ *
+ * `ctaHref` exists for the builder page, where `#pricing` is not on the page
+ * and the link has to lead back to the landing page's plans.
  */
-export default function PromoBar() {
+export default function PromoBar({ ctaHref = promo.cta.href }) {
   return (
     <div className="on-accent bg-linear-to-r from-dream-600 via-dream-500 to-dream-700 text-white">
       <Container>
@@ -31,7 +34,7 @@ export default function PromoBar() {
           </span>
 
           <a
-            href={promo.cta.href}
+            href={ctaHref}
             className="inline-flex items-center gap-s2 rounded-full px-s4 py-s1 font-semibold underline underline-offset-4 transition-colors duration-150 hover:bg-white/15"
           >
             {promo.cta.label}

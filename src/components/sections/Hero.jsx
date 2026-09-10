@@ -85,27 +85,6 @@ export default function Hero() {
               {hero.body}
             </Reveal>
 
-            {/* Illustrative, not interactive: the animals from the Instagram
-                carousel, shown so the promise is concrete. Nothing to fill in
-                here — the story itself is built after the CTA. */}
-            <Reveal immediate delay={240} className="flex flex-col gap-s4">
-              <p className="text-sm font-semibold text-text-primary">{hero.animalsLabel}</p>
-              <ul className="flex flex-wrap items-center gap-s3">
-                {hero.animals.map((animal) => (
-                  <li
-                    key={animal.name}
-                    className="inline-flex items-center gap-s3 rounded-full border border-border-default bg-surface-base px-s5 py-s3 text-md font-semibold text-text-primary"
-                  >
-                    <span aria-hidden="true" className="text-lg leading-none">
-                      {animal.emoji}
-                    </span>
-                    {animal.name}
-                  </li>
-                ))}
-                <li className="text-sm text-text-muted">{hero.animalsMore}</li>
-              </ul>
-            </Reveal>
-
             {/* One CTA only, and it goes straight to the story builder. */}
             <Reveal immediate delay={300} className="w-full sm:w-auto">
               <Button href={hero.cta.href} size="lg" icon="arrowRight" wrap className="w-full text-center sm:w-auto">
