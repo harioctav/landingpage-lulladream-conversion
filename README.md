@@ -23,6 +23,7 @@ npm run lint
 ```
 assets/                     Source images
   AVIF/                     Story cover art (used by the awareness page only)
+  JPG/                      cover-hero.jpg — the hero illustration
   PNG/                      Photography and avatars
   SVG/                      Brand logo and decorative shapes
 src/
@@ -49,8 +50,8 @@ Two real HTML entries (`build.rollupOptions.input` in `vite.config.js`), so
 
 ## Page structure
 
-A promo bar sits above the navbar with the discount and the live countdown,
-then, top to bottom:
+Top to bottom (the landing page has no promo bar above the navbar — the hero's
+offer card carries the countdown; the builder page keeps its bar):
 
 1. **Hero** — the campaign headline, an explanation of what the product does
    with a child's favourite animal (the animals from the Instagram carousel
@@ -94,8 +95,8 @@ can be re-pointed in one edit:
 
 `promo.endsAt` in `src/data/content.js` is an ISO timestamp with an explicit
 offset, so it means the same moment for a parent in Jakarta and one in
-Singapore. Every countdown on both pages — promo bar, hero offer card,
-closing banner, builder result — reads it, so none of them can disagree.
+Singapore. Every countdown — the hero offer card and closing banner here, the
+promo bar and result upsell on the builder — reads it, so none can disagree.
 
 The unit boxes are a grid of equal `1fr` columns, so every box takes the
 widest one's width instead of hugging its own caption ("SECONDS" is twice as
@@ -371,12 +372,12 @@ to stacked blocks, and the plan cards stack with the annual card losing its
   differently per platform; swap in the campaign artwork for a consistent
   lockup.
 
-- **The hero image is story artwork, not photography.** `cover-4.avif`
-  (Phra Aphai Mani) is used by request. The brief asks for a child mid-laugh
-  with headphones or a tablet; no such frame exists in the supplied library, so
-  swap in real in-use photography before a paid retargeting spend. The other
-  three covers stay in `assets/AVIF/` for the awareness page and are not
-  imported here.
+- **Check the hero illustration's licence.** `assets/JPG/cover-hero.jpg` (fox
+  and turtle) carries an artist's signature, bottom right, dated 2018. Confirm
+  LullaDream has the right to use it in paid ads before the campaign runs.
+  At 735px wide it is also a little soft on 2x screens at hero size; a
+  1,470px export would fix that. It is shown at its own 735/577 ratio, so
+  nothing is cropped.
 - **Ratings, quote counts and review text are illustrative.** Replace with real
   attributed reviews before publishing; fabricated social proof is a legal
   exposure, not just a copy placeholder.

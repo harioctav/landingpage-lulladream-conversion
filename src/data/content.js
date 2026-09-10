@@ -62,8 +62,8 @@ export const hero = {
   reassurance:
     "Cancel any time · 7-day free trial on Super Premium · Works offline",
   image: {
-    src: covers.cover4,
-    alt: "Cover art from a LullaDream story: a young hero playing a magic flute on the shore as a sea creature rises from the waves",
+    src: covers.coverHero,
+    alt: "Storybook illustration: a curious fox leans over a floating log to look at a turtle asleep on a lily pad",
   },
   stats: [
     { value: "4.9★", label: "App Store rating" },

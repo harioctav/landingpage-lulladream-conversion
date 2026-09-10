@@ -15,13 +15,13 @@
 import logo from "@assets/SVG/logo-lulladream.svg";
 
 /* ---- Photography --------------------------------------------------------
-   The conversion page is deliberately "in use" rather than dreamy: a laughing
-   child mid-story in the hero, a parent and child mid-read on the guarantee.
-   The story-cover art belongs to the awareness page and is not shipped here. */
+   The guarantee section's parent-and-child reading shot. */
 import restingChild from "@assets/PNG/img-lulladream2.webp";
 
-/* ---- Story cover art ---------------------------------------------------- */
-import cover4 from "@assets/AVIF/cover-4.avif";
+/* ---- Story cover art ----------------------------------------------------
+   The hero's storybook illustration. The AVIF covers in assets/AVIF belong to
+   the awareness page and are not imported here. */
+import coverHero from "@assets/JPG/cover-hero.jpg"; /* 735×577 */
 
 /* ---- Avatars ------------------------------------------------------------ */
 import avatar1 from "@assets/PNG/E0p8byOZTAASic9JX5dHje4JKM.png";
@@ -51,7 +51,7 @@ export const brand = { logo };
 
 export const photos = { restingChild };
 
-export const covers = { cover4 };
+export const covers = { coverHero };
 
 export const avatars = { avatar1, avatar2, avatar3, avatar4, avatar5 };
 

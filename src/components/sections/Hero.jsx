@@ -123,18 +123,18 @@ export default function Hero() {
             <img
               src={hero.image.src}
               alt={hero.image.alt}
-              width="384"
-              height="384"
+              width="735"
+              height="577"
               decoding="async"
               fetchPriority="high"
-              className="animate-float aspect-[4/3] w-full rounded-xl object-cover object-top shadow-3"
+              className="animate-float aspect-[735/577] w-full rounded-xl object-cover shadow-3"
             />
 
             {/* Overlaps the image. `relative z-10` is load-bearing:
                 `animate-float` sets `will-change: transform`, which makes the
                 image its own stacking context, and an in-flow card pulled
                 under it by the negative margin would be painted behind it. */}
-            <figcaption className="relative z-10 -mt-10 flex justify-center lg:justify-start lg:pl-s7">
+            <figcaption className="relative z-10 -mt-10 flex justify-center">
               <OfferCard />
             </figcaption>
           </Reveal>

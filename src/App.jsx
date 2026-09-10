@@ -1,5 +1,4 @@
 import BlobDefs from '@/components/ui/BlobDefs'
-import PromoBar from '@/components/ui/PromoBar'
 import Navbar from '@/components/sections/Navbar'
 import Hero from '@/components/sections/Hero'
 import Comparison from '@/components/sections/Comparison'
@@ -20,11 +19,10 @@ export default function App() {
       </a>
 
       <BlobDefs />
-      <PromoBar />
       <Navbar />
 
       <main id="main">
-        {/* 1 — animal-picker hero  2 — Free / Premium / Super Premium
+        {/* 1 — hero + offer countdown  2 — Premium vs Super Premium
             3 — plans (+ testimonial)  4 — trust  5 — guarantee
             6 — promo countdown CTA */}
         <Hero />
