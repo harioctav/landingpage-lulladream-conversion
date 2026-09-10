@@ -31,10 +31,11 @@ export const nav = {
 
 /* ---------------------------------------------------------------------------
    PROMO
-   `endsAt` is the single source of truth for every countdown on the page —
-   the top bar and the final CTA both read it. Set it to the real campaign
-   deadline; it is an ISO timestamp with an explicit offset so it means the
-   same moment for a parent in Jakarta and one in Singapore.
+   `endsAt` is the single source of truth for every countdown — the hero
+   offer card and closing banner here, and the result upsell in the builder.
+   Set it to the real campaign deadline; it is an ISO timestamp with an
+   explicit offset so it means the same moment for a parent in Jakarta and
+   one in Singapore.
    ------------------------------------------------------------------------ */
 export const promo = {
   badge: "58% OFF",
@@ -43,7 +44,6 @@ export const promo = {
   sub: "Instagram readers only — the animal-story plan, at less than a coffee a month.",
   note: "Offer ends in",
   endsAt: "2026-09-30T23:59:59+07:00",
-  cta: { label: "See the offer", href: "#pricing" },
   expired: "This offer has closed — current pricing is below.",
 };
 

@@ -8,7 +8,6 @@ import Countdown from '@/components/ui/Countdown'
 import Decor from '@/components/ui/Decor'
 import Icon from '@/components/ui/Icon'
 import Logo from '@/components/ui/Logo'
-import PromoBar from '@/components/ui/PromoBar'
 
 /**
  * Animal-story builder — where every campaign CTA lands.
@@ -310,8 +309,6 @@ export default function CreateStory() {
 
   return (
     <div className="min-h-svh bg-surface-raised">
-      <PromoBar ctaHref={builder.result.upsellCta.href} />
-
       <div className="relative isolate mx-auto w-full max-w-lg sm:px-s6 sm:pb-16 sm:pt-8">
         <Decor name="shapeCloud" tint={false} className="left-[-40%] top-[12%] w-44 opacity-70" float />
         <Decor name="shapeSparkleAlt" tint={false} className="right-[-30%] top-[30%] w-16 opacity-70" />

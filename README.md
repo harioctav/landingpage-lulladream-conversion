@@ -36,7 +36,7 @@ src/
   data/content.js           All landing-page copy, as data
   data/create.js            Builder copy and options
   components/ui/            Button, Icon, Logo, Section, Decor, Starfield,
-                            PromoBar, Countdown, Photo, Reveal, BlobDefs
+                            Countdown, Photo, Reveal, BlobDefs
   components/sections/      The 6 landing-page sections, in render order
   pages/CreateStory.jsx     The animal-story builder
   App.jsx                   Landing page: skip link · Navbar · main · Footer
@@ -50,8 +50,8 @@ Two real HTML entries (`build.rollupOptions.input` in `vite.config.js`), so
 
 ## Page structure
 
-Top to bottom (the landing page has no promo bar above the navbar — the hero's
-offer card carries the countdown; the builder page keeps its bar):
+Top to bottom. Neither page has a promo bar: on the landing page the hero's
+offer card carries the countdown, and on the builder the result upsell does.
 
 1. **Hero** — the campaign headline, an explanation of what the product does
    with a child's favourite animal (the animals from the Instagram carousel
@@ -69,8 +69,8 @@ offer card carries the countdown; the builder page keeps its bar):
 Copy carries the campaign the whole way down: the hero picks up the Instagram
 post's promise, the comparison table answers "which plan writes that story",
 and the testimonials name animals rather than features. The countdown appears
-three times — promo bar, hero offer card, closing banner — and all three read
-the same `promo.endsAt`.
+in the hero offer card and the closing banner, and both read the same
+`promo.endsAt`.
 
 Three conversion rules the layout enforces:
 
@@ -96,7 +96,7 @@ can be re-pointed in one edit:
 `promo.endsAt` in `src/data/content.js` is an ISO timestamp with an explicit
 offset, so it means the same moment for a parent in Jakarta and one in
 Singapore. Every countdown — the hero offer card and closing banner here, the
-promo bar and result upsell on the builder — reads it, so none can disagree.
+result upsell on the builder — reads it, so none can disagree.
 
 The unit boxes are a grid of equal `1fr` columns, so every box takes the
 widest one's width instead of hugging its own caption ("SECONDS" is twice as
