@@ -66,9 +66,10 @@ offer card carries the countdown, and on the builder the result upsell does.
 5. **Guarantee** — 7-day trial, money-back, cancel-in-one-tap, secure checkout.
 6. **Final CTA banner** — the same countdown, in full.
 
-Copy carries the campaign the whole way down: the hero picks up the Instagram
-post's promise, the comparison table answers "which plan writes that story",
-and the testimonials name animals rather than features. The countdown appears
+The campaign carries through the copy where it belongs: the hero picks up the
+Instagram post's promise and the testimonials name animals. The comparison
+table deliberately does not — it describes the app itself, what each plan
+unlocks, so it still reads correctly after the campaign ends. The countdown appears
 in the hero offer card and the closing banner, and both read the same
 `promo.endsAt`.
 

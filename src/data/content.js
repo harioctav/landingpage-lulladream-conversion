@@ -80,8 +80,8 @@ export const hero = {
    ------------------------------------------------------------------------ */
 export const comparison = {
   eyebrow: "Premium or Super Premium",
-  title: "Both write the animal stories. One writes them in your voice.",
-  body: "Every paid plan gives unlimited stories around whatever animal your child names. The difference is how far you can take it.",
+  title: "Both unlock LullaDream. One makes it sound like you.",
+  body: "Both plans open the full story library, unlimited personalised bedtime stories and every narrator voice. Super Premium adds your own cloned voice, four times the coins for custom stories, and a 7-day free trial.",
   columns: {
     premium: {
       name: "Premium",
@@ -96,14 +96,14 @@ export const comparison = {
   },
   rows: [
     {
-      label: "Animal stories",
-      premium: "Unlimited, any animal they name",
-      superPremium: "Unlimited, any animal they name",
+      label: "Bedtime stories",
+      premium: "Unlimited, plus the full story library",
+      superPremium: "Unlimited, plus the full story library",
     },
     {
       label: "Personalisation",
-      premium: "Name, favourite animal, friends, pets",
-      superPremium: "Name, favourite animal, friends, pets",
+      premium: "Your child’s name, friends, pets and favourite things",
+      superPremium: "Your child’s name, friends, pets and favourite things",
     },
     {
       label: "Narrator voices",
@@ -137,11 +137,6 @@ export const comparison = {
       label: "Story library",
       premium: "Saved forever, replay any night",
       superPremium: "Saved forever, replay any night",
-    },
-    {
-      label: "Children per account",
-      premium: "Up to 4 children",
-      superPremium: "Up to 4 children",
     },
     {
       label: "Support",
