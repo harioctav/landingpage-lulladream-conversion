@@ -122,7 +122,7 @@ function Result({ story, headingRef, onReset }) {
 
   return (
     <article className="flex grow flex-col bg-surface-raised">
-      <div className="px-s7 pb-s7 pt-s6">
+      <div className="px-s7 pb-s7 pt-s6 max-sm:px-s5">
         <button
           type="button"
           onClick={onReset}
@@ -141,9 +141,7 @@ function Result({ story, headingRef, onReset }) {
         </h1>
       </div>
 
-      {/* Bottom padding leaves room for the floating Listen button, so at the
-          end of the page it sits over empty space rather than the last button. */}
-      <div className="flex grow flex-col gap-s8 rounded-t-xl bg-surface-base px-s7 pb-28 pt-s7 shadow-1">
+      <div className="flex grow flex-col gap-s8 rounded-t-xl bg-surface-base px-s7 pb-s8 pt-s7 shadow-1 max-sm:px-s5">
         <section>
           <h2 className="text-md font-semibold text-text-primary">{r.readLabel}</h2>
           <div className="mt-s5 flex flex-col gap-s6">
@@ -157,7 +155,7 @@ function Result({ story, headingRef, onReset }) {
 
         <aside
           aria-labelledby={upsellId}
-          className="rounded-lg border-2 border-action-primary bg-surface-base p-s7 shadow-3"
+          className="rounded-lg border-2 border-action-primary bg-surface-base p-s7 shadow-3 max-sm:p-s5"
         >
           <p className="flex items-center gap-s3 text-xs font-semibold uppercase tracking-[0.14em] text-action-primary-active">
             <Icon name="wave" size={15} />
@@ -183,7 +181,7 @@ function Result({ story, headingRef, onReset }) {
             size="lg"
             icon="arrowRight"
             wrap
-            className="mt-s6 w-full text-center"
+            className="mt-s6 w-full text-center max-sm:px-s5 max-sm:text-md"
           >
             {r.upsellCta.label}
           </Button>
@@ -196,18 +194,26 @@ function Result({ story, headingRef, onReset }) {
       </div>
 
       {/* Listening is the Super Premium feature, so the button says so — a
-          bare play icon that led to pricing would be a bait-and-switch. */}
-      <div className="pointer-events-none sticky bottom-s7 z-10 -mt-24 flex justify-end px-s7">
-        <a
+          bare play icon that led to pricing would be a bait-and-switch.
+
+          A sticky bar in normal flow, the same pattern as the builder's Next
+          bar, rather than a button floated over the content with a negative
+          margin: while reading it stays pinned to the bottom of the screen,
+          and at the end of the page it takes its own row below "Make another
+          story" instead of landing on top of it. */}
+      <div className="sticky bottom-0 z-10 rounded-t-xl border-t border-border-default bg-surface-base px-s7 py-s5 max-sm:px-s5">
+        <Button
           href={r.upsellCta.href}
-          className="pointer-events-auto inline-flex min-h-14 items-center gap-s3 rounded-full bg-action-primary pl-s5 pr-s6 text-md font-semibold text-white shadow-glow transition-colors duration-150 hover:bg-action-primary-hover active:bg-action-primary-active"
+          size="lg"
+          wrap
+          className="w-full text-center max-sm:px-s5 max-sm:text-md"
         >
-          <span className="flex size-8 items-center justify-center rounded-full bg-white/20">
-            <Icon name="play" size={18} className="fill-current" />
+          <span className="inline-flex items-center gap-s3">
+            <Icon name="play" size={18} className="shrink-0 fill-current" />
+            {r.listenLabel}
+            <Icon name="lock" size={16} className="shrink-0 opacity-80" />
           </span>
-          {r.listenLabel}
-          <Icon name="lock" size={16} className="opacity-80" />
-        </a>
+        </Button>
       </div>
     </article>
   )
