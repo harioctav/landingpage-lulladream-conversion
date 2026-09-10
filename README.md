@@ -33,8 +33,7 @@ src/
   lib/cx.js                 Class-name joiner
   data/content.js           All page copy, as data
   components/ui/            Button, Icon, Logo, Section, Decor, Starfield,
-                            AnimalPicker, PromoBar, Countdown, Photo, Reveal,
-                            BlobDefs
+                            PromoBar, Countdown, Photo, Reveal, BlobDefs
   components/sections/      The 6 page sections, in render order
   App.jsx                   Skip link · Navbar · main · Footer
 ```
@@ -44,12 +43,13 @@ src/
 A promo bar sits above the navbar with the discount and the live countdown,
 then, top to bottom:
 
-1. **Hero** — the campaign headline, the discount, a *single* primary CTA, and
-   the **animal picker**: type the child's name, tap the animal from the
-   Instagram carousel, and read the story title it becomes.
-2. **Free / Premium / Super Premium** — one comparison table, Super Premium
-   highlighted, because voice cloning and the unlimited animal stories the
-   campaign promises only exist on that tier.
+1. **Hero** — the campaign headline, an explanation of what the product does
+   with a child's favourite animal (the animals from the Instagram carousel
+   are shown as static examples, not a form), a *single* primary CTA into the
+   story builder, and the offer card with the live countdown.
+2. **Premium vs Super Premium** — one comparison table, Super Premium
+   highlighted, because voice cloning and the free trial only exist there.
+   There is no Free column: this page sells the two paid plans.
 3. **Pricing** — a Monthly/Yearly switch over the two plan cards from the app,
    with the result-carrying testimonial directly above them.
 4. **Testimonial / trust** — rating, review marquee, checkout trust badges.
@@ -58,7 +58,9 @@ then, top to bottom:
 
 Copy carries the campaign the whole way down: the hero picks up the Instagram
 post's promise, the comparison table answers "which plan writes that story",
-and the testimonials name animals rather than features.
+and the testimonials name animals rather than features. The countdown appears
+three times — promo bar, hero offer card, closing banner — and all three read
+the same `promo.endsAt`.
 
 Three conversion rules the layout enforces:
 
@@ -69,11 +71,17 @@ Three conversion rules the layout enforces:
 - **The risk reducer sits with the price**, inside each plan card, not three
   sections below it.
 
-### The picker is not the generator
+### Where the CTAs go
 
-`AnimalPicker` renders written copy from `hero.picker.animals` — no model call.
-Wire it to the real endpoint when there is one, but keep the response instant:
-the point is the feeling of one tap, not a spinner.
+`links` in `src/data/content.js` holds the two outbound destinations, so they
+can be re-pointed in one edit:
+
+- `createStory` — the hero and navbar CTAs. Building the story happens in the
+  app, not on this page; nothing here asks the visitor to fill anything in.
+- `checkout` — the plan cards.
+
+`createStory` is a placeholder URL. Point it at the real builder (with whatever
+campaign parameters attribution needs) before the ads run.
 
 ### One deadline, one source
 
@@ -276,10 +284,6 @@ Target **WCAG 2.2 AA**. axe-core at 1440px and 390px: **0 violations**.
 - The countdown is a `role="timer"` whose digits are `aria-hidden`; a visually
   hidden sentence states the remaining time in whole hours and minutes, because
   a per-second live region is unusable with a screen reader.
-- The animal picker is a labelled group of toggle buttons — each a normal tab
-  stop with native Enter/Space, `aria-pressed` for state — and the story
-  preview is a polite live region, so the new title is announced rather than
-  changing silently. The name field has a real `<label>`.
 - The Monthly/Yearly control is two toggle buttons in a labelled group rather
   than a custom slider, so the period in view is announced. The moving pill is
   a sibling that translates, so the labels never re-flow as it slides.
@@ -311,9 +315,11 @@ to stacked blocks, and the plan cards stack with the annual card losing its
 
 - **Checkout is not wired.** All plan CTAs point at `#checkout`.
 
-- **The animal chips use emoji**, because the Instagram creative's illustrated
-  animals are not in the asset folder. They render differently per platform;
-  swap in the campaign artwork for a consistent lockup.
+- **The hero's animal examples use emoji**, because the Instagram creative's
+  illustrated animals are not in the asset folder. They render differently per
+  platform; swap in the campaign artwork for a consistent lockup.
+
+- **`links.createStory` is a placeholder URL.** Every hero CTA points at it.
 
 - **The hero image is story artwork, not photography.** `cover-4.avif`
   (Phra Aphai Mani) is used by request. The brief asks for a child mid-laugh

@@ -1,10 +1,42 @@
 import { hero, promo } from '@/data/content'
-import AnimalPicker from '@/components/ui/AnimalPicker'
 import Button from '@/components/ui/Button'
+import Countdown from '@/components/ui/Countdown'
 import Decor from '@/components/ui/Decor'
 import Icon from '@/components/ui/Icon'
 import Reveal from '@/components/ui/Reveal'
 import { Container } from '@/components/ui/Section'
+
+/**
+ * The campaign offer, above the fold and on the clock.
+ *
+ * It reads the same `promo.endsAt` as the top bar and the closing banner, so
+ * the three countdowns on this page cannot disagree with each other.
+ */
+function OfferCard() {
+  return (
+    <div className="w-full max-w-sm rounded-lg border border-border-default bg-surface-base p-s7 shadow-3">
+      <p className="flex items-center gap-s3 text-xs font-semibold uppercase tracking-[0.14em] text-action-primary-active">
+        <Icon name="flame" size={15} />
+        Campaign offer
+      </p>
+
+      <p className="mt-s4 flex flex-wrap items-baseline gap-s3">
+        <span className="text-d3 font-bold text-text-primary">{promo.badge}</span>
+        <span className="text-lg font-semibold text-text-primary">{promo.plan}</span>
+      </p>
+
+      {/* The clock sits on the raised surface so the white unit boxes read as
+          raised out of the card rather than dissolving into it. */}
+      <div className="mt-s6 rounded-md bg-surface-raised px-s5 py-s6">
+        <Countdown endsAt={promo.endsAt} label={promo.note} size="sm" />
+      </div>
+
+      <p className="mt-s5 text-sm text-text-muted">
+        7 days free, then USD 3.99 / month. Cancel any time.
+      </p>
+    </div>
+  )
+}
 
 export default function Hero() {
   return (
@@ -24,7 +56,7 @@ export default function Hero() {
       <Decor name="shapeSparkleAlt" tint={false} className="right-[3%] top-[8%] w-16 opacity-70" />
 
       <Container className="relative w-full">
-        <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] lg:gap-16">
+        <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-16">
           {/* Copy — revealed on load, staggered top to bottom. */}
           <div className="flex flex-col items-start gap-s7">
             <Reveal
@@ -53,30 +85,35 @@ export default function Hero() {
               {hero.body}
             </Reveal>
 
-            {/* The campaign discount, stated where the eye already is. */}
-            <Reveal
-              immediate
-              delay={230}
-              as="p"
-              className="inline-flex flex-wrap items-center gap-s4 rounded-md border border-dream-100 bg-surface-base px-s5 py-s4 text-sm text-text-muted"
-            >
-              <span className="inline-flex items-center gap-s2 rounded-full bg-badge-discount px-s4 py-s1 text-xs font-bold uppercase tracking-[0.1em] text-white">
-                <Icon name="flame" size={13} />
-                {promo.badge}
-              </span>
-              <span className="text-text-primary">
-                <strong className="font-semibold">{promo.plan}</strong> — {promo.sub}
-              </span>
+            {/* Illustrative, not interactive: the animals from the Instagram
+                carousel, shown so the promise is concrete. Nothing to fill in
+                here — the story itself is built after the CTA. */}
+            <Reveal immediate delay={240} className="flex flex-col gap-s4">
+              <p className="text-sm font-semibold text-text-primary">{hero.animalsLabel}</p>
+              <ul className="flex flex-wrap items-center gap-s3">
+                {hero.animals.map((animal) => (
+                  <li
+                    key={animal.name}
+                    className="inline-flex items-center gap-s3 rounded-full border border-border-default bg-surface-base px-s5 py-s3 text-md font-semibold text-text-primary"
+                  >
+                    <span aria-hidden="true" className="text-lg leading-none">
+                      {animal.emoji}
+                    </span>
+                    {animal.name}
+                  </li>
+                ))}
+                <li className="text-sm text-text-muted">{hero.animalsMore}</li>
+              </ul>
             </Reveal>
 
-            {/* One CTA only. A second button here splits the decision. */}
-            <Reveal immediate delay={280} className="w-full sm:w-auto">
+            {/* One CTA only, and it goes straight to the story builder. */}
+            <Reveal immediate delay={300} className="w-full sm:w-auto">
               <Button href={hero.cta.href} size="lg" icon="arrowRight" wrap className="w-full text-center sm:w-auto">
                 {hero.cta.label}
               </Button>
             </Reveal>
 
-            <Reveal immediate delay={340} as="p" className="text-sm text-text-muted">
+            <Reveal immediate delay={350} as="p" className="text-sm text-text-muted">
               {hero.reassurance}
             </Reveal>
 
@@ -95,7 +132,7 @@ export default function Hero() {
             </Reveal>
           </div>
 
-          {/* The demo: story art, then the animal picker that drives it. */}
+          {/* Story art, with the offer clock anchored to it. */}
           <Reveal immediate delay={220} as="figure" className="relative">
             <div
               aria-hidden="true"
@@ -111,15 +148,15 @@ export default function Hero() {
               height="384"
               decoding="async"
               fetchPriority="high"
-              className="animate-float aspect-[16/10] w-full rounded-xl object-cover object-top shadow-3"
+              className="animate-float aspect-[4/3] w-full rounded-xl object-cover object-top shadow-3"
             />
 
             {/* Overlaps the image. `relative z-10` is load-bearing:
                 `animate-float` sets `will-change: transform`, which makes the
                 image its own stacking context, and an in-flow card pulled
                 under it by the negative margin would be painted behind it. */}
-            <figcaption className="relative z-10 -mt-10 px-s4 sm:px-s7">
-              <AnimalPicker />
+            <figcaption className="relative z-10 -mt-10 flex justify-center lg:justify-start lg:pl-s7">
+              <OfferCard />
             </figcaption>
           </Reveal>
         </div>

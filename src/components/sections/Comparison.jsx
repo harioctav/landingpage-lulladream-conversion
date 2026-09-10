@@ -78,7 +78,7 @@ export default function Comparison() {
       <Reveal delay={100} className="mx-auto max-w-5xl">
         {/*
           One real <table> at every width. The layout changes with CSS only —
-          on phones each row becomes a stacked block whose three values are
+          on phones each row becomes a stacked block whose two values are
           labelled by their column names — so the semantic row/column
           relationships survive for assistive tech.
 
@@ -91,29 +91,19 @@ export default function Comparison() {
         <div className="overflow-hidden rounded-lg border border-border-default shadow-1">
           <table className="w-full border-separate border-spacing-0 text-left max-sm:block">
             <caption className="sr-only">
-              Free, Premium and Super Premium compared, feature by feature
+              Premium and Super Premium compared, feature by feature
             </caption>
 
             <thead>
               <tr className="max-sm:hidden">
                 <th
                   scope="col"
-                  className="w-[22%] rounded-tl-[27px] bg-surface-raised px-s6 py-s7 align-bottom"
+                  className="w-[28%] rounded-tl-[27px] bg-surface-raised px-s6 py-s7 align-bottom"
                 >
                   <span className="text-sm font-semibold text-text-muted">Feature</span>
                 </th>
 
-                <th scope="col" className="w-[20%] bg-surface-raised px-s6 py-s7 align-bottom">
-                  <span className="flex flex-col gap-s1">
-                    <span className="text-xs font-medium uppercase tracking-[0.14em] text-text-muted">
-                      {columns.free.note}
-                    </span>
-                    <span className="text-lg font-bold text-text-primary">{columns.free.name}</span>
-                    <span className="text-sm font-medium text-text-muted">{columns.free.price}</span>
-                  </span>
-                </th>
-
-                <th scope="col" className="w-[27%] bg-surface-raised px-s6 py-s7 align-bottom">
+                <th scope="col" className="w-[34%] bg-surface-raised px-s6 py-s7 align-bottom">
                   <span className="flex flex-col gap-s1">
                     <span className="text-xs font-medium uppercase tracking-[0.14em] text-text-muted">
                       {columns.premium.note}
@@ -129,7 +119,7 @@ export default function Comparison() {
 
                 <th
                   scope="col"
-                  className="w-[31%] rounded-tr-[27px] border-x-2 border-t-2 border-action-primary bg-dream-100/60 px-s6 py-s7 align-bottom"
+                  className="w-[38%] rounded-tr-[27px] border-x-2 border-t-2 border-action-primary bg-dream-100/60 px-s6 py-s7 align-bottom"
                 >
                   <span className="flex flex-col gap-s1">
                     <span className="inline-flex w-fit items-center gap-s2 rounded-full bg-action-primary px-s4 py-s1 text-xs font-semibold uppercase tracking-[0.12em] text-white">
@@ -174,16 +164,6 @@ export default function Comparison() {
                   <td
                     className={cx(
                       'px-s6 py-s7 text-md max-sm:block max-sm:px-0 max-sm:py-0',
-                      i > 0 && 'sm:border-t sm:border-border-default',
-                    )}
-                  >
-                    <MobileCaption>{columns.free.name}</MobileCaption>
-                    <Value value={row.free} tone="free" />
-                  </td>
-
-                  <td
-                    className={cx(
-                      'px-s6 py-s7 text-md max-sm:mt-s4 max-sm:block max-sm:px-0 max-sm:py-0',
                       i > 0 && 'sm:border-t sm:border-border-default',
                     )}
                   >

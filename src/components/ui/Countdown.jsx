@@ -41,12 +41,35 @@ function sentence(left) {
   return `Offer ends in about ${parts.join(', ')}.`
 }
 
+/**
+ * `sm` is for the hero card, where four unit boxes at the banner size overflow
+ * a 24rem card. It drops the colons as well as tightening the box: at this
+ * size the separators are noise rather than structure.
+ */
+const sizes = {
+  md: {
+    box: 'min-w-[3.75rem] px-s4 py-s4 sm:min-w-[4.5rem] sm:px-s5',
+    digits: 'text-d3 sm:text-d2',
+    caption: 'text-xs',
+    gap: 'gap-s3 sm:gap-s4',
+    separators: true,
+  },
+  sm: {
+    box: 'min-w-[3.25rem] px-s3 py-s3',
+    digits: 'text-d3',
+    caption: 'text-[10px]',
+    gap: 'gap-s2',
+    separators: false,
+  },
+}
+
 export default function Countdown({
   endsAt,
   hours = 48,
   label,
   onAccent = false,
   compact = false,
+  size = 'md',
   onExpire,
 }) {
   // The clock is read in an effect, never during render: `Date.now()` in the
@@ -91,6 +114,7 @@ export default function Countdown({
     )
   }
 
+  const scale = sizes[size] ?? sizes.md
   const box = onAccent
     ? 'border-white/35 bg-white/15 text-white'
     : 'border-border-default bg-surface-base text-text-primary'
@@ -111,23 +135,24 @@ export default function Countdown({
 
       <p className="sr-only">{sentence(left)}</p>
 
-      <div aria-hidden="true" className="flex items-center gap-s3 sm:gap-s4">
+      <div aria-hidden="true" className={cx('flex items-center', scale.gap)}>
         {units.map((unit, i) => (
-          <span key={unit.label} className="flex items-center gap-s3 sm:gap-s4">
-            <span
-              className={cx(
-                'flex min-w-[3.75rem] flex-col items-center rounded-md border px-s4 py-s4 sm:min-w-[4.5rem] sm:px-s5',
-                box,
-              )}
-            >
-              <span className="text-d3 font-bold leading-none tabular-nums sm:text-d2">
+          <span key={unit.label} className={cx('flex items-center', scale.gap)}>
+            <span className={cx('flex flex-col items-center rounded-md border', scale.box, box)}>
+              <span className={cx('font-bold leading-none tabular-nums', scale.digits)}>
                 {unit.value}
               </span>
-              <span className={cx('mt-s2 text-xs font-medium uppercase tracking-[0.12em]', captionTone)}>
+              <span
+                className={cx(
+                  'mt-s2 font-medium uppercase tracking-[0.12em]',
+                  scale.caption,
+                  captionTone,
+                )}
+              >
                 {unit.label}
               </span>
             </span>
-            {i < units.length - 1 && (
+            {scale.separators && i < units.length - 1 && (
               <span className={cx('text-d3 font-bold leading-none', captionTone)}>:</span>
             )}
           </span>

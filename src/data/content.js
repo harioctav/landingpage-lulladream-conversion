@@ -5,13 +5,25 @@ export const site = {
   tagline: 'AI bedtime stories, personalised for your child',
 }
 
+/* ---------------------------------------------------------------------------
+   DESTINATIONS
+   Every outbound CTA resolves here, so the story builder and the checkout can
+   be re-pointed in one edit. `createStory` is a placeholder — swap it for the
+   real builder URL (with whatever campaign parameters attribution needs)
+   before the ads run.
+   ------------------------------------------------------------------------ */
+export const links = {
+  createStory: 'https://app.lulladream.ai/create',
+  checkout: '#checkout',
+}
+
 export const nav = {
   links: [
     { label: 'What you unlock', href: '#compare' },
     { label: 'Plans', href: '#pricing' },
     { label: 'Guarantee', href: '#guarantee' },
   ],
-  cta: { label: 'Create Their Story', href: '#pricing' },
+  cta: { label: 'Create Their Story', href: links.createStory },
 }
 
 /* ---------------------------------------------------------------------------
@@ -42,65 +54,22 @@ export const promo = {
 export const hero = {
   eyebrow: 'From our favourite-animal post',
   title: ['Their Favourite Animal,', 'Tonight’s Bedtime Hero'],
-  body: 'You found out what their favourite animal says about them. Now make that animal the star of tonight’s story — with your child’s name in it, read in your own voice.',
-  cta: { label: 'Create Their Animal Story', href: '#pricing' },
+  body: 'You found out what their favourite animal says about them. Tell LullaDream which one it is — lion, puppy, T-Rex — and we write tonight’s story around it, with your child’s name in it and read in your own voice.',
+  animalsLabel: 'Pick from the whole animal kingdom',
+  animals: [
+    { emoji: '🦁', name: 'Lion' },
+    { emoji: '🐶', name: 'Puppy' },
+    { emoji: '🐱', name: 'Cat' },
+    { emoji: '🐴', name: 'Horse' },
+    { emoji: '🐍', name: 'Snake' },
+    { emoji: '🦖', name: 'T-Rex' },
+  ],
+  animalsMore: '…and any other animal they name.',
+  cta: { label: 'Create Their Animal Story', href: links.createStory },
   reassurance: 'Cancel any time · 7-day free trial on Super Premium · Works offline',
   image: {
     src: covers.cover4,
     alt: 'Cover art from a LullaDream story: a young hero playing a magic flute on the shore as a sea creature rises from the waves',
-  },
-  picker: {
-    label: 'Try it now',
-    nameLabel: 'Your child’s name',
-    namePlaceholder: 'e.g. Aluna',
-    fallbackName: 'Your child',
-    animalLabel: 'Their favourite animal',
-    previewLabel: 'Tonight’s story',
-    animals: [
-      {
-        id: 'lion',
-        emoji: '🦁',
-        name: 'Lion',
-        title: '{name} and the Lion Who Lost His Roar',
-        trait: 'Bold and loud — and secretly gentle at bedtime.',
-      },
-      {
-        id: 'puppy',
-        emoji: '🐶',
-        name: 'Puppy',
-        title: '{name} and the Puppy Who Waited by the Door',
-        trait: 'Loyal, warm, and never wants to be alone.',
-      },
-      {
-        id: 'cat',
-        emoji: '🐱',
-        name: 'Cat',
-        title: '{name} and the Cat Who Owned the Moon',
-        trait: 'Curious and independent, on their own terms.',
-      },
-      {
-        id: 'horse',
-        emoji: '🐴',
-        name: 'Horse',
-        title: '{name} and the Horse Who Ran to the Sea',
-        trait: 'Free-spirited, always halfway to the next adventure.',
-      },
-      {
-        id: 'snake',
-        emoji: '🐍',
-        name: 'Snake',
-        title: '{name} and the Snake Who Learned to Sing',
-        trait: 'Watchful and clever, slow to trust — then all in.',
-      },
-      {
-        id: 'dino',
-        emoji: '🦖',
-        name: 'T-Rex',
-        title: '{name} and the T-Rex Who Was Afraid of the Dark',
-        trait: 'Big feelings in a small body. Braver than they know.',
-      },
-    ],
-    cta: { label: 'Create this story', href: '#pricing' },
   },
   stats: [
     { value: '4.9★', label: 'App Store rating' },
@@ -116,11 +85,10 @@ export const hero = {
    on the top one.
    ------------------------------------------------------------------------ */
 export const comparison = {
-  eyebrow: 'What each plan unlocks',
-  title: 'Where the animal stories actually live',
-  body: 'Every plan writes stories. Only one of them writes an unlimited number, in your voice, with your child’s favourite animal in the lead.',
+  eyebrow: 'Premium or Super Premium',
+  title: 'Both write the animal stories. One writes them in your voice.',
+  body: 'Every paid plan gives unlimited stories around whatever animal your child names. The difference is how far you can take it.',
   columns: {
-    free: { name: 'Free', note: 'What you have now', price: '3 stories / week' },
     premium: { name: 'Premium', note: 'Unlimited stories', price: 'From USD 2.28 / month' },
     superPremium: {
       name: 'Super Premium',
@@ -130,60 +98,55 @@ export const comparison = {
   },
   rows: [
     {
-      label: 'Bedtime stories',
-      free: '3 per week',
-      premium: 'Unlimited',
-      superPremium: 'Unlimited',
-      highlight: true,
+      label: 'Animal stories',
+      premium: 'Unlimited, any animal they name',
+      superPremium: 'Unlimited, any animal they name',
     },
     {
-      label: 'Animal personalisation',
-      free: 'Child’s name only',
+      label: 'Personalisation',
       premium: 'Name, favourite animal, friends, pets',
       superPremium: 'Name, favourite animal, friends, pets',
     },
     {
-      label: 'Voice templates',
-      free: '1 standard voice',
+      label: 'Narrator voices',
       premium: 'Unlimited voice templates',
       superPremium: 'Unlimited voice templates',
     },
     {
       label: 'Voice cloning — your own voice',
-      free: false,
       premium: false,
       superPremium: 'Included. Bedtime still sounds like you.',
       highlight: true,
     },
     {
       label: 'Coins for custom stories',
-      free: false,
       premium: '100 / month · 1,200 / year',
       superPremium: '400 / month · 4,800 / year',
       highlight: true,
     },
     {
-      label: 'Offline downloads',
-      free: false,
-      premium: 'Road trips, flights, patchy Wi-Fi',
-      superPremium: 'Road trips, flights, patchy Wi-Fi',
-    },
-    {
-      label: 'Story library',
-      free: 'Last 5 stories',
-      premium: 'Saved forever, replay any night',
-      superPremium: 'Saved forever, replay any night',
-    },
-    {
       label: 'Free trial',
-      free: false,
       premium: false,
       superPremium: '7 days free, cancel any time',
       highlight: true,
     },
     {
+      label: 'Offline downloads',
+      premium: 'Road trips, flights, patchy Wi-Fi',
+      superPremium: 'Road trips, flights, patchy Wi-Fi',
+    },
+    {
+      label: 'Story library',
+      premium: 'Saved forever, replay any night',
+      superPremium: 'Saved forever, replay any night',
+    },
+    {
+      label: 'Children per account',
+      premium: 'Up to 4 children',
+      superPremium: 'Up to 4 children',
+    },
+    {
       label: 'Support',
-      free: 'Help centre',
       premium: 'Priority replies within a day',
       superPremium: 'Priority replies within a day',
     },
@@ -228,7 +191,7 @@ export const pricing = {
           { strong: 'Unlimited', text: 'voice templates' },
           { strong: 'Get 100 coins', text: 'to create custom stories' },
         ],
-        cta: { label: 'Start My Premium Plan', href: '#checkout' },
+        cta: { label: 'Start My Premium Plan', href: links.checkout },
         note: 'Billed monthly. Cancel any time.',
       },
       {
@@ -249,7 +212,7 @@ export const pricing = {
             text: 'to create custom stories and clone your voice',
           },
         ],
-        cta: { label: 'Start My 7-Day Free Trial', href: '#checkout' },
+        cta: { label: 'Start My 7-Day Free Trial', href: links.checkout },
         note: 'Nothing charged today. 30-day money-back guarantee after that.',
         featured: true,
       },
@@ -268,7 +231,7 @@ export const pricing = {
           { strong: 'Unlimited', text: 'voice templates' },
           { strong: 'Get 1,200 coins', text: 'to create custom stories' },
         ],
-        cta: { label: 'Start My Premium Plan', href: '#checkout' },
+        cta: { label: 'Start My Premium Plan', href: links.checkout },
         note: 'Billed once a year. Cancel any time.',
       },
       {
@@ -288,7 +251,7 @@ export const pricing = {
             text: 'to create custom stories and clone your voice',
           },
         ],
-        cta: { label: 'Unlock Super Premium', href: '#checkout' },
+        cta: { label: 'Unlock Super Premium', href: links.checkout },
         note: 'Billed once a year. 30-day money-back guarantee.',
         featured: true,
       },
@@ -333,7 +296,7 @@ export const proof = {
     },
     {
       quote:
-        'The free plan gave us three stories a week and she wanted a new animal every night. Upgrading took thirty seconds.',
+        'She wanted a different animal every night — a rabbit, then a whale, then a rabbit again. Premium keeps up with her; nothing else did.',
       name: 'Grace O.',
       role: 'Premium · Parent of a 4-year-old',
       avatar: avatars.avatar5,
