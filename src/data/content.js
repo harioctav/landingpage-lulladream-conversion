@@ -17,7 +17,7 @@ export const site = {
    ------------------------------------------------------------------------ */
 export const links = {
   createStory: "./create/",
-  checkout: "#checkout",
+  checkout: "./checkout/",
 };
 
 export const nav = {
@@ -185,7 +185,7 @@ export const pricing = {
           { strong: "Unlimited", text: "voice templates" },
           { strong: "Get 100 coins", text: "to create custom stories" },
         ],
-        cta: { label: "Start My Premium Plan", href: links.checkout },
+        cta: { label: "Start My Premium Plan", href: `${links.checkout}?plan=premium-monthly` },
         note: "Billed monthly. Cancel any time.",
       },
       {
@@ -207,7 +207,7 @@ export const pricing = {
             text: "to create custom stories and clone your voice",
           },
         ],
-        cta: { label: "Start My 7-Day Free Trial", href: links.checkout },
+        cta: { label: "Start My 7-Day Free Trial", href: `${links.checkout}?plan=super-monthly` },
         note: "Nothing charged today. 30-day money-back guarantee after that.",
         featured: true,
       },
@@ -227,7 +227,7 @@ export const pricing = {
           { strong: "Unlimited", text: "voice templates" },
           { strong: "Get 1,200 coins", text: "to create custom stories" },
         ],
-        cta: { label: "Start My Premium Plan", href: links.checkout },
+        cta: { label: "Start My Premium Plan", href: `${links.checkout}?plan=premium-yearly` },
         note: "Billed once a year. Cancel any time.",
       },
       {
@@ -248,7 +248,7 @@ export const pricing = {
             text: "to create custom stories and clone your voice",
           },
         ],
-        cta: { label: "Unlock Super Premium", href: links.checkout },
+        cta: { label: "Unlock Super Premium", href: `${links.checkout}?plan=super-yearly` },
         note: "Billed once a year. 30-day money-back guarantee.",
         featured: true,
       },

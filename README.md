@@ -33,16 +33,26 @@ src/
   lib/blobPaths.js          Generated organic photo silhouettes
   lib/cx.js                 Class-name joiner
   lib/storyGenerator.js     Story generator for the builder — a STUB, see below
+  lib/payment.js            Payment submission — a STUB, see below
   data/content.js           All landing-page copy, as data
   data/create.js            Builder copy and options
+  data/checkout.js          Checkout and payment-outcome copy
   components/ui/            Button, Icon, Logo, Section, Decor, Starfield,
-                            Countdown, Photo, Reveal, BlobDefs
+                            PlanCard, Countdown, Photo, Reveal, BlobDefs
   components/sections/      The 6 landing-page sections, in render order
   pages/CreateStory.jsx     The animal-story builder
+  pages/Checkout.jsx        Account + credit card, for one plan
+  pages/CheckoutStatus.jsx  Success, pending and failed share this page
   App.jsx                   Landing page: skip link · Navbar · main · Footer
-  main.jsx · create.jsx     Entry points for the two pages
+  main.jsx · create.jsx     Entry points
+  checkout.jsx              Entry point for the checkout
+  checkout-status.jsx       Entry point for all three outcome pages
 index.html                  Landing page
 create/index.html           Builder, served at /create/
+checkout/index.html         Checkout, served at /checkout/
+checkout/success/           Payment outcomes, one real URL each —
+checkout/pending/           a payment provider needs a distinct
+checkout/failed/            return_url per outcome
 ```
 
 Two real HTML entries (`build.rollupOptions.input` in `vite.config.js`), so
@@ -90,7 +100,8 @@ can be re-pointed in one edit:
 - `createStory` — the hero and navbar CTAs, `./create/`. Nothing on the
   landing page asks the visitor to fill anything in; the builder does that.
   It is relative rather than root-absolute so a sub-path deploy still works.
-- `checkout` — the plan cards.
+- `checkout` — the plan cards, each appending its own `?plan=<id>` so the
+  checkout knows what is being bought.
 
 ### One deadline, one source
 
@@ -139,6 +150,55 @@ Implementation notes worth keeping:
 - The card uses `overflow-clip`, not `overflow-hidden`: hidden would make it a
   scroll container, and the sticky Next bar and Listen button would stick to
   the card rather than the viewport.
+
+## Checkout and payment
+
+`/checkout/?plan=<id>` collects the account (full name, email, password) and a
+credit card — the only method offered — for the plan named in the query. An
+unknown or missing `plan` falls back to `checkout.fallbackPlanId`.
+
+Two cards: the form on the left, and on the right the chosen plan drawn by
+`PlanCard` — the same component the pricing section uses, so it is literally
+the card that was clicked, minus its button, since the form's submit is the
+action. On phones the plan comes first: what you are buying, before what you
+have to type. The campaign countdown and a link back to the plans sit under
+it.
+
+The three outcomes are separate static pages sharing `CheckoutStatus.jsx`,
+with the outcome baked into each HTML file as `data-status`:
+
+| URL | Shows |
+| --- | --- |
+| `/checkout/success/?ref=…` | Receipt line and **Open LullaDream** → `https://app.lulladream.ai/` |
+| `/checkout/pending/?ref=…` | "the bank is still confirming", with the reference to quote |
+| `/checkout/failed/?reason=…&plan=…` | Why it failed, and a retry that returns to the same plan |
+
+### `src/lib/payment.js` is a stub, and test mode is on
+
+It makes no request: the card details are dropped once an outcome is picked.
+`checkout.testMode` is `true`, which shows a notice on the form saying nothing
+is charged. **Turn it off only together with wiring a real provider**, or the
+page becomes a live-looking form collecting real card numbers.
+
+Wiring one is not just filling in `submitPayment`. Raw card numbers must never
+reach your server or this bundle — use the provider's hosted fields (Stripe
+Elements, Braintree Hosted Fields, …) so the number goes straight to them and
+this page only ever handles a token. The card inputs are placeholders for
+exactly that, which is also why the guarantee copy can honestly say "we never
+see your card".
+
+While the stub is in place, these cards force each outcome:
+
+| Card | Outcome |
+| --- | --- |
+| `4242 4242 4242 4242` | success |
+| `4000 0000 0000 0002` | failed (`card_declined`) |
+| `5555 5555 5555 4444` | pending |
+
+Client-side validation is UX only, never trust: required fields, an email
+shape, 8-character minimum password, a Luhn check on the card, `MM/YY` that is
+not in the past, and a 3–4 digit code. Invalid fields get `aria-invalid`, a
+message tied by `aria-describedby`, and focus moves to the first one.
 
 ## The squashed-SVG fix
 
@@ -362,7 +422,11 @@ to stacked blocks, and the plan cards stack with the annual card losing its
   Claims made in copy — the 30-day money-back guarantee, the 7-day trial, the
   4.9 rating, the "2,400+ parents" — need to be true or removed.
 
-- **Checkout is not wired.** All plan CTAs point at `#checkout`.
+- **Payment is not wired.** `src/lib/payment.js` is a stub and
+  `checkout.testMode` is `true`. No card is charged and no account is created
+  — the outcome pages exist, but nothing behind them does. Wire a provider
+  with hosted fields, create the account server-side, and send the receipt
+  email the success page promises.
 
 - **The builder does not call the model.** `src/lib/storyGenerator.js` is a
   template stub; wire it to the real generation API before launch. Until then
